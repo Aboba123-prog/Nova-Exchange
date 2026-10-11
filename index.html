@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NovaExchange — Биржевой Терминал</title>
+    <style>
+        :root {
+            --bg-dark: #12161c;
+            --bg-panel: #1e2329;
+            --bg-hover: #2b313a;
+            --border-color: #2b313a;
+            --text-main: #eaecef;
+            --text-muted: #848e9c;
+            --green: #0ecb81;
+            --red: #f6465d;
+            --accent: #f0b90b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            border-radius: 0 !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            height: -webkit-fill-available;
+            overflow: hidden;
+            font-size: 13px;
+        }
+
+        /* --- AUTH OVERLAY --- */
+        #auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(18, 22, 28, 0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 12px;
+        }
+
+        .auth-box {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .auth-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: var(--accent);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            outline: none;
+            font-size: 13px;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--accent);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            font-size: 12px;
+        }
+
+        .auth-tab.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            font-weight: bold;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .btn-submit:active {
+            opacity: 0.8;
+        }
+
+        /* --- LAYOUT --- */
+        #app {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        sidebar {
+            width: 200px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform 0.2s ease;
+        }
+
+        .logo {
+            padding: 14px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 1px;
+        }
+
+        .nav-list {
+            list-style: none;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 12px 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 12px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            border-left: 3px solid var(--accent);
+        }
+
+        .user-panel {
+            padding: 10px 14px;
+            border-top: 1px solid var(--border-color);
+            font-size: 11px;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar-preview {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 12px;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        header {
+            height: 44px;
+            min-height: 44px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+            line-height: 1;
+        }
+
+        .ticker-bar {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .ticker-item {
+            display: flex;
+            gap: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .view-section {
+            display: none;
+            padding: 12px;
+            flex: 1;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .view-section.active {
+            display: flex;
+        }
+
+        .trade-grid {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        #chart-container {
+            height: 260px;
+            width: 100%;
+            position: relative;
+            background: #161a1e;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .order-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .order-tab {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .order-tab.buy.active {
+            background: var(--green);
+            color: #000;
+            border-color: var(--green);
+        }
+
+        .order-tab.sell.active {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .btn-buy {
+            background: var(--green);
+            color: #000;
+        }
+
+        .btn-sell {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 11px;
+        }
+
+        th,
+        td {
+            padding: 6px 8px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: normal;
+        }
+
+        .green {
+            color: var(--green);
+        }
+
+        .red {
+            color: var(--red);
+        }
+
+        .ai-log {
+            height: 180px;
+            overflow-y: auto;
+            background: var(--bg-dark);
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            font-family: monospace;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .avatar-option {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .avatar-option.selected {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Responsive Mobile Layout (iPhone SE & Mobile) */
+        @media (max-width: 768px) {
+            sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                transform: translateX(-100%);
+                box-shadow: 4px 0 16px rgba(0, 0, 0, 0.5);
+            }
+
+            sidebar.open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .trade-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #chart-container {
+                height: 220px;
+            }
+
+            .view-section {
+                padding: 8px;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- AUTH OVERLAY -->
+    <div id="auth-overlay">
+        <div class="auth-box">
+            <div class="auth-title" id="auth-header-title">Вход в систему</div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="setAuthMode('login')">Вход</button>
+                <button class="auth-tab" id="tab-register" onclick="setAuthMode('register')">Регистрация</button>
+            </div>
+            <form id="auth-form" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label id="lbl-login">Логин</label>
+                    <input type="text" id="auth-username" class="form-input" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-password">Пароль</label>
+                    <input type="password" id="auth-password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn-submit" id="auth-btn-label">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app">
+        <sidebar id="sidebar">
+            <div class="logo">NOVA EXCHANGE</div>
+            <ul class="nav-list">
+                <li class="nav-item active" id="nav-trade" onclick="switchView('trade')">Торговля</li>
+                <li class="nav-item" id="nav-ai" onclick="switchView('ai')">ИИ Автопилот</li>
+                <li class="nav-item" id="nav-wallet" onclick="switchView('wallet')">Кошелек</li>
+                <li class="nav-item" id="nav-profile" onclick="switchView('profile')">Профиль</li>
+                <li class="nav-item" id="nav-settings" onclick="switchView('settings')">Настройки</li>
+            </ul>
+            <div class="user-panel">
+                <div class="avatar-preview" id="sidebar-avatar">N</div>
+                <div style="overflow: hidden;">
+                    <div id="user-display-name" style="font-weight: bold; text-overflow: ellipsis; overflow: hidden;">-
+                    </div>
+                    <div id="user-display-balance" class="green" style="font-size: 11px;">$0.00</div>
+                </div>
+            </div>
+        </sidebar>
+
+        <main>
+            <header>
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="ticker-bar" id="ticker-bar"></div>
+                <button class="btn-action"
+                    style="margin: 0; padding: 4px 8px; width: auto; background: var(--bg-dark); color: var(--text-muted); border: 1px solid var(--border-color); font-size: 11px;"
+                    id="btn-logout" onclick="logout()">Выход</button>
+            </header>
+
+            <!-- TRADE VIEW -->
+            <div id="view-trade" class="view-section active">
+                <div class="trade-grid">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div class="panel" style="flex: 1;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <div style="display: flex; gap: 4px;" id="asset-selector"></div>
+                                <div id="current-price-display" style="font-size: 14px; font-weight: bold;">$0.00</div>
+                            </div>
+                            <div id="chart-container">
+                                <canvas id="trade-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-title" id="lbl-portfolio-title">Портфель активов</div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th id="th-asset">Актив</th>
+                                            <th id="th-qty">Кол-во</th>
+                                            <th id="th-avg">Ср. Цена</th>
+                                            <th id="th-cur">Текущая</th>
+                                            <th id="th-pl">Прибыль/Убыток</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="portfolio-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-title" id="lbl-create-order">Создать ордер</div>
+                        <div class="order-tabs">
+                            <div class="order-tab buy active" id="tab-buy" onclick="setOrderType('buy')">Покупка</div>
+                            <div class="order-tab sell" id="tab-sell" onclick="setOrderType('sell')">Продажа</div>
+                        </div>
+                        <div class="form-group">
+                            <label id="lbl-order-qty">Количество лотов</label>
+                            <input type="number" id="order-amount" class="form-input" value="1" min="1"
+                                oninput="updateOrderTotal()">
+                        </div>
+                        <div style="margin: 8px 0; color: var(--text-muted); font-size: 11px;">
+                            <span id="lbl-order-total">Общая сумма:</span> <b id="order-total-val"
+                                style="color: var(--text-main);">$0.00</b>
+                        </div>
+                        <button id="order-submit-btn" class="btn-action btn-buy"
+                            onclick="executeManualOrder()">Купить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI VIEW -->
+            <div id="view-ai" class="view-section">
+                <div class="panel">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            <div style="font-size: 13px; font-weight: bold;" id="lbl-ai-title">Автономный ИИ-Трейдер
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 10px;" id="lbl-ai-sub">ИИ самостоятельно
+                                управляет балансом и позициями на рынке.</div>
+                        </div>
+                        <button id="ai-toggle-btn" class="btn-submit"
+                            style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;"
+                            onclick="toggleAI()">Включить ИИ</button>
+                    </div>
+                    <div style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);" id="lbl-ai-log-title">
+                        Журнал торговых операций ИИ:</div>
+                    <div class="ai-log" id="ai-log-container"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title" id="lbl-ai-history-title">История сделок ИИ</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th id="th-time">Время</th>
+                                    <th id="th-op">Операция</th>
+                                    <th id="th-symbol">Актив</th>
+                                    <th id="th-vol">Объем</th>
+                                    <th id="th-price">Цена</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ai-history-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WALLET VIEW -->
+            <div id="view-wallet" class="view-section">
+                <div class="panel" style="max-width: 450px;">
+                    <div class="panel-title" id="lbl-wallet-title">Управление кошельком</div>
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
+                        <span id="lbl-wallet-bal">Баланс:</span> <span id="wallet-balance-val"
+                            class="green">$0.00</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="lbl-wallet-amt">Сумма операции ($)</label>
+                        <input type="number" id="wallet-amount" class="form-input" value="500" min="50">
+                    </div>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                        <button class="btn-submit" style="margin:0;" id="btn-deposit"
+                            onclick="walletDeposit()">Пополнить</button>
+                        <button class="btn-action"
+                            style="margin:0; background: var(--bg-dark); color: var(--text-main); border: 1px solid var(--border-color);"
+                            id="btn-withdraw" onclick="openWithdrawModal()">Вывести средства</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE VIEW -->
+            <div id="view-profile" class="view-section">
+                <div class="panel" style="max-width: 450px;">
+                    <div class="panel-title" id="lbl-profile-title">Настройки профиля и аватар</div>
+
+                    <div class="form-group">
+                        <label id="lbl-select-avatar">Выберите стандартный аватар</label>
+                        <div class="avatar-grid" id="avatar-grid">
+                            <div class="avatar-option" onclick="selectAvatarText('N')">N</div>
+                            <div class="avatar-option" onclick="selectAvatarText('A')">A</div>
+                            <div class="avatar-option" onclick="selectAvatarText('X')">X</div>
+                            <div class="avatar-option" onclick="selectAvatarText('PRO')">PRO</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="lbl-upload-avatar">Или загрузите свое фото/картинку</label>
+                        <input type="file" id="avatar-file-input" class="form-input" accept="image/*"
+                            onchange="handleAvatarUpload(event)">
+                    </div>
+
+                    <button class="btn-submit" id="btn-save-profile" onclick="saveProfileSettings()">Сохранить
+                        профиль</button>
+                </div>
+            </div>
+
+            <!-- SETTINGS VIEW -->
+            <div id="view-settings" class="view-section">
+                <div class="panel" style="max-width: 450px;">
+                    <div class="panel-title" id="lbl-settings-title">Параметры терминала</div>
+                    <div class="form-group">
+                        <label id="lbl-lang-select">Язык интерфейса</label>
+                        <select id="lang-select" class="form-select" onchange="changeLanguage(this.value)">
+                            <option value="ru">Русский (RUS)</option>
+                            <option value="en">English (ENG)</option>
+                            <option value="az">Azərbaycan (AZE)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="lbl-sim-speed">Скорость симуляции рынка</label>
+                        <select id="sim-speed-select" class="form-select" onchange="changeSpeed(this.value)">
+                            <option value="1000">1x (Нормальная)</option>
+                            <option value="500">2x (Ускоренная)</option>
+                            <option value="200">5x (Максимальная)</option>
+                        </select>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <button class="btn-action"
+                            style="background: transparent; border: 1px solid var(--red); color: var(--red);"
+                            id="btn-reset-data" onclick="resetAccountData()">Сбросить данные аккаунта</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- WITHDRAW MODAL -->
+    <div id="withdraw-modal"
+        style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:10000; padding: 12px;">
+        <div class="panel" style="width: 100%; max-width: 320px;">
+            <div class="panel-title" id="lbl-modal-title">Вывод средств на банк</div>
+            <div class="form-group">
+                <label id="lbl-select-bank">Выберите банк</label>
+                <select class="form-select" id="withdraw-bank">
+                    <option>Kapital Bank / International Bank</option>
+                    <option>Visa / Mastercard Card</option>
+                    <option>Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label id="lbl-card-num">Номер карты / счета</label>
+                <input type="text" class="form-input" placeholder="0000 0000 0000 0000">
+            </div>
+            <button class="btn-submit" id="btn-confirm-withdraw" onclick="confirmWithdraw()">Подтвердить вывод</button>
+            <button class="btn-action"
+                style="background: transparent; color: var(--text-muted); border: none; margin-top: 6px;"
+                id="btn-cancel-withdraw" onclick="closeWithdrawModal()">Отмена</button>
+        </div>
+    </div>
+
+    <script>
+        const I18N = {
+            ru: {
+                authTitleLogin: "Вход в систему", authTitleReg: "Создание аккаунта",
+                login: "Вход", register: "Регистрация", username: "Логин", password: "Пароль",
+                navTrade: "Торговля", navAI: "ИИ Автопилот", navWallet: "Кошелек", navProfile: "Профиль", navSettings: "Настройки",
+                logout: "Выход", portfolioTitle: "Портфель активов", createOrder: "Создать ордер",
+                buy: "Покупка", sell: "Продажа", qty: "Количество лотов", total: "Общая сумма:",
+                aiTitle: "Автономный ИИ-Трейдер", aiSub: "ИИ самостоятельно управляет балансом и позициями на рынке.",
+                startAI: "Включить ИИ", stopAI: "Остановить ИИ", aiLogTitle: "Журнал торговых операций ИИ:",
+                aiHistoryTitle: "История сделок ИИ", walletTitle: "Управление кошельком", balance: "Баланс:",
+                operationAmt: "Сумма операции ($)", deposit: "Пополнить", withdraw: "Вывести средства",
+                profileTitle: "Настройки профиля и аватар", selectAvatar: "Выберите стандартный аватар",
+                uploadAvatar: "Или загрузите свое фото/картинку", saveProfile: "Сохранить профиль",
+                settingsTitle: "Параметры терминала", langSelect: "Язык интерфейса", simSpeed: "Скорость симуляции рынка",
+                resetData: "Сбросить данные аккаунта", modalTitle: "Вывод средств на банк", selectBank: "Выберите банк",
+                cardNum: "Номер карты / счета", confirm: "Подтвердить вывод", cancel: "Отмена",
+                asset: "Актив", qtyCol: "Кол-во", avgCol: "Ср. Цена", curCol: "Текущая", plCol: "Прибыль/Убыток",
+                timeCol: "Время", opCol: "Операция", volCol: "Объем", priceCol: "Цена"
+            },
+            en: {
+                authTitleLogin: "System Login", authTitleReg: "Create Account",
+                login: "Login", register: "Register", username: "Username", password: "Password",
+                navTrade: "Trading", navAI: "AI Autopilot", navWallet: "Wallet", navProfile: "Profile", navSettings: "Settings",
+                logout: "Logout", portfolioTitle: "Asset Portfolio", createOrder: "Create Order",
+                buy: "Buy", sell: "Sell", qty: "Quantity", total: "Total Amount:",
+                aiTitle: "Autonomous AI Trader", aiSub: "AI autonomously manages balance and market positions.",
+                startAI: "Enable AI", stopAI: "Disable AI", aiLogTitle: "AI Operation Log:",
+                aiHistoryTitle: "AI Trade History", walletTitle: "Wallet Management", balance: "Balance:",
+                operationAmt: "Amount ($)", deposit: "Deposit", withdraw: "Withdraw Funds",
+                profileTitle: "Profile Settings & Avatar", selectAvatar: "Select Standard Avatar",
+                uploadAvatar: "Or Upload Custom Photo", saveProfile: "Save Profile",
+                settingsTitle: "Terminal Settings", langSelect: "Interface Language", simSpeed: "Market Simulation Speed",
+                resetData: "Reset Account Data", modalTitle: "Bank Withdrawal", selectBank: "Select Bank",
+                cardNum: "Card / Account Number", confirm: "Confirm Withdrawal", cancel: "Cancel",
+                asset: "Asset", qtyCol: "Qty", avgCol: "Avg Price", curCol: "Current", plCol: "P/L",
+                timeCol: "Time", opCol: "Operation", volCol: "Volume", priceCol: "Price"
+            },
+            az: {
+                authTitleLogin: "Sistemə Giriş", authTitleReg: "Hesab Yarat",
+                login: "Daxil ol", register: "Qeydiyyat", username: "İstifadəçi adı", password: "Şifrə",
+                navTrade: "Ticarət", navAI: "Sİ Avtopilot", navWallet: "Rəqəmsal Qovluq", navProfile: "Profil", navSettings: "Tənzimləmələr",
+                logout: "Çıxış", portfolioTitle: "Aktiv Portfeli", createOrder: "Order Yarat",
+                buy: "Alış", sell: "Satış", qty: "Miqdar", total: "Ümumi Məbləğ:",
+                aiTitle: "Müstəqil Sİ-Treyder", aiSub: "Sİ balansı və bazardakı mövqeləri müstəqil idarə edir.",
+                startAI: "Sİ İşə Sal", stopAI: "Sİ Dayan", aiLogTitle: "Sİ Əməliyyat Jurnalı:",
+                aiHistoryTitle: "Sİ Ticarət Tarixçəsi", walletTitle: "Balans İdarəetməsi", balance: "Balans:",
+                operationAmt: "Əməliyyat Məbləği ($)", deposit: "Artır", withdraw: "Məbləği Çıxar",
+                profileTitle: "Profil Tənzimləmələri və Avatar", selectAvatar: "Standart Avatar Seç",
+                uploadAvatar: "Və ya Öz Şəklini Yüklə", saveProfile: "Yadda Saxla",
+                settingsTitle: "Terminal Tənzimləmələri", langSelect: "Interfeys Dili", simSpeed: "Bazar Simulyasiya Sürəti",
+                resetData: "Hesab Məlumatlarını Sıfırla", modalTitle: "Banka Məbləğ Çıxarılması", selectBank: "Bankı Seçin",
+                cardNum: "Kart / Hesab Nömrəsi", confirm: "Çıxarışı Təsdiqlə", cancel: "Ləğv Et",
+                asset: "Aktiv", qtyCol: "Say", avgCol: "Orta Qiymət", curCol: "Cari", plCol: "Mənfəət/Zərər",
+                timeCol: "Vaxt", opCol: "Əməliyyat", volCol: "Həcm", priceCol: "Qiymət"
+            }
+        };
+
+        let currentLang = 'ru';
+        let currentAuthMode = 'login';
+        let currentUser = null;
+        let activeAsset = 'NXD';
+        let orderType = 'buy';
+        let aiActive = false;
+        let simSpeed = 1000;
+        let simTimer = null;
+        let aiHistory = [];
+
+        const ASSETS = {
+            'NXD': { name: 'Nova Dynamics', price: 100.00, history: [] },
+            'APE': { name: 'Apex Energy', price: 45.50, history: [] },
+            'CYBR': { name: 'Cyber Robotics', price: 210.20, history: [] },
+            'OBT': { name: 'Orbital Tech', price: 12.80, history: [] }
+        };
+
+        window.onload = () => {
+            initMarketHistory();
+            checkSession();
+            setupChartCanvas();
+            renderAssetButtons();
+            renderTickerBar();
+            startMarketSimulation();
+        };
+
+        function getStorage(key, fallback) {
+            const data = localStorage.getItem('nova_' + key);
+            return data ? JSON.parse(data) : fallback;
+        }
+
+        function setStorage(key, val) {
+            localStorage.setItem('nova_' + key, JSON.stringify(val));
+        }
+
+        function checkSession() {
+            const session = getStorage('session', null);
+            if (session && session.username) {
+                const users = getStorage('users', {});
+                if (users[session.username]) {
+                    currentUser = users[session.username];
+                    if (!currentUser.avatar) currentUser.avatar = 'N';
+                    document.getElementById('auth-overlay').style.display = 'none';
+                    updateUserUI();
+                    applyTranslations();
+                    return;
+                }
+            }
+            document.getElementById('auth-overlay').style.display = 'flex';
+        }
+
+        function setAuthMode(mode) {
+            currentAuthMode = mode;
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            const activeTab = document.getElementById(mode === 'login' ? 'tab-login' : 'tab-register');
+            if (activeTab) activeTab.classList.add('active');
+
+            const t = I18N[currentLang];
+            document.getElementById('auth-header-title').innerText = mode === 'login' ? t.authTitleLogin : t.authTitleReg;
+            document.getElementById('auth-btn-label').innerText = mode === 'login' ? t.login : t.register;
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const u = document.getElementById('auth-username').value.trim();
+            const p = document.getElementById('auth-password').value.trim();
+            const users = getStorage('users', {});
+
+            if (currentAuthMode === 'register') {
+                if (users[u]) {
+                    alert(currentLang === 'ru' ? 'Пользователь уже существует!' : 'User already exists!');
+                    return;
+                }
+                users[u] = { username: u, password: p, balance: 10000.00, portfolio: {}, avatar: 'N', avatarType: 'text' };
+                setStorage('users', users);
+                currentUser = users[u];
+            } else {
+                if (!users[u] || users[u].password !== p) {
+                    alert(currentLang === 'ru' ? 'Неверный логин или пароль!' : 'Invalid credentials!');
+                    return;
+                }
+                currentUser = users[u];
+            }
+
+            setStorage('session', { username: currentUser.username });
+            document.getElementById('auth-overlay').style.display = 'none';
+            updateUserUI();
+            applyTranslations();
+        }
+
+        function logout() {
+            localStorage.removeItem('nova_session');
+            location.reload();
+        }
+
+        function saveUserData() {
+            if (!currentUser) return;
+            const users = getStorage('users', {});
+            users[currentUser.username] = currentUser;
+            setStorage('users', users);
+            updateUserUI();
+        }
+
+        function updateUserUI() {
+            if (!currentUser) return;
+            document.getElementById('user-display-name').innerText = currentUser.username;
+            document.getElementById('user-display-balance').innerText = '$' + currentUser.balance.toFixed(2);
+            document.getElementById('wallet-balance-val').innerText = '$' + currentUser.balance.toFixed(2);
+
+            const avatarBox = document.getElementById('sidebar-avatar');
+            if (currentUser.avatarType === 'image') {
+                avatarBox.innerText = '';
+                avatarBox.style.backgroundImage = `url(${currentUser.avatar})`;
+            } else {
+                avatarBox.style.backgroundImage = 'none';
+                avatarBox.innerText = currentUser.avatar || 'N';
+            }
+
+            renderPortfolioTable();
+            updateOrderTotal();
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            applyTranslations();
+        }
+
+        function applyTranslations() {
+            const t = I18N[currentLang];
+            document.getElementById('tab-login').innerText = t.login;
+            document.getElementById('tab-register').innerText = t.register;
+            document.getElementById('auth-header-title').innerText = currentAuthMode === 'login' ? t.authTitleLogin : t.authTitleReg;
+            document.getElementById('auth-btn-label').innerText = currentAuthMode === 'login' ? t.login : t.register;
+            document.getElementById('lbl-login').innerText = t.username;
+            document.getElementById('lbl-password').innerText = t.password;
+
+            document.getElementById('nav-trade').innerText = t.navTrade;
+            document.getElementById('nav-ai').innerText = t.navAI;
+            document.getElementById('nav-wallet').innerText = t.navWallet;
+            document.getElementById('nav-profile').innerText = t.navProfile;
+            document.getElementById('nav-settings').innerText = t.navSettings;
+
+            document.getElementById('btn-logout').innerText = t.logout;
+            document.getElementById('lbl-portfolio-title').innerText = t.portfolioTitle;
+            document.getElementById('lbl-create-order').innerText = t.createOrder;
+            document.getElementById('tab-buy').innerText = t.buy;
+            document.getElementById('tab-sell').innerText = t.sell;
+            document.getElementById('lbl-order-qty').innerText = t.qty;
+            document.getElementById('lbl-order-total').innerText = t.total;
+
+            document.getElementById('lbl-ai-title').innerText = t.aiTitle;
+            document.getElementById('lbl-ai-sub').innerText = t.aiSub;
+            document.getElementById('lbl-ai-log-title').innerText = t.aiLogTitle;
+            document.getElementById('lbl-ai-history-title').innerText = t.aiHistoryTitle;
+
+            document.getElementById('lbl-wallet-title').innerText = t.walletTitle;
+            document.getElementById('lbl-wallet-bal').innerText = t.balance;
+            document.getElementById('lbl-wallet-amt').innerText = t.operationAmt;
+            document.getElementById('btn-deposit').innerText = t.deposit;
+            document.getElementById('btn-withdraw').innerText = t.withdraw;
+
+            document.getElementById('lbl-profile-title').innerText = t.profileTitle;
+            document.getElementById('lbl-select-avatar').innerText = t.selectAvatar;
+            document.getElementById('lbl-upload-avatar').innerText = t.uploadAvatar;
+            document.getElementById('btn-save-profile').innerText = t.saveProfile;
+
+            document.getElementById('lbl-settings-title').innerText = t.settingsTitle;
+            document.getElementById('lbl-lang-select').innerText = t.langSelect;
+            document.getElementById('lbl-sim-speed').innerText = t.simSpeed;
+            document.getElementById('btn-reset-data').innerText = t.resetData;
+
+            document.getElementById('lbl-modal-title').innerText = t.modalTitle;
+            document.getElementById('lbl-select-bank').innerText = t.selectBank;
+            document.getElementById('lbl-card-num').innerText = t.cardNum;
+            document.getElementById('btn-confirm-withdraw').innerText = t.confirm;
+            document.getElementById('btn-cancel-withdraw').innerText = t.cancel;
+
+            document.getElementById('th-asset').innerText = t.asset;
+            document.getElementById('th-qty').innerText = t.qtyCol;
+            document.getElementById('th-avg').innerText = t.avgCol;
+            document.getElementById('th-cur').innerText = t.curCol;
+            document.getElementById('th-pl').innerText = t.plCol;
+
+            document.getElementById('th-time').innerText = t.timeCol;
+            document.getElementById('th-op').innerText = t.opCol;
+            document.getElementById('th-symbol').innerText = t.asset;
+            document.getElementById('th-vol').innerText = t.volCol;
+            document.getElementById('th-price').innerText = t.priceCol;
+
+            const aiBtn = document.getElementById('ai-toggle-btn');
+            aiBtn.innerText = aiActive ? t.stopAI : t.startAI;
+            setOrderType(orderType);
+        }
+
+        function initMarketHistory() {
+            for (let symbol in ASSETS) {
+                let basePrice = ASSETS[symbol].price;
+                for (let i = 0; i < 30; i++) {
+                    let open = basePrice;
+                    let change = (Math.random() - 0.49) * (basePrice * 0.03);
+                    let close = Math.max(1, open + change);
+                    let high = Math.max(open, close) + Math.random() * (basePrice * 0.01);
+                    let low = Math.min(open, close) - Math.random() * (basePrice * 0.01);
+                    ASSETS[symbol].history.push({ open, high, low, close });
+                    basePrice = close;
+                }
+                ASSETS[symbol].price = basePrice;
+            }
+        }
+
+        function startMarketSimulation() {
+            if (simTimer) clearInterval(simTimer);
+            simTimer = setInterval(() => {
+                for (let symbol in ASSETS) {
+                    let asset = ASSETS[symbol];
+                    let open = asset.price;
+                    let change = (Math.random() - 0.49) * (open * 0.025);
+                    let close = Math.max(1, open + change);
+                    let high = Math.max(open, close) + Math.random() * (open * 0.005);
+                    let low = Math.min(open, close) - Math.random() * (open * 0.005);
+
+                    asset.history.push({ open, high, low, close });
+                    if (asset.history.length > 50) asset.history.shift();
+                    asset.price = close;
+                }
+
+                if (aiActive) runAITradeLogic();
+
+                renderTickerBar();
+                renderChart();
+                updateUserUI();
+            }, simSpeed);
+        }
+
+        function changeSpeed(val) {
+            simSpeed = parseInt(val);
+            startMarketSimulation();
+        }
+
+        function toggleAI() {
+            aiActive = !aiActive;
+            const btn = document.getElementById('ai-toggle-btn');
+            const t = I18N[currentLang];
+            if (aiActive) {
+                btn.innerText = t.stopAI;
+                btn.style.background = 'var(--red)';
+                logAI('AI Engine Engaged. Active Market Scanning...');
+            } else {
+                btn.innerText = t.startAI;
+                btn.style.background = 'var(--accent)';
+                logAI('AI Engine Disengaged.');
+            }
+        }
+
+        function logAI(msg) {
+            const container = document.getElementById('ai-log-container');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.innerText = `[${time}] ${msg}`;
+            container.prepend(entry);
+        }
+
+        function runAITradeLogic() {
+            if (!currentUser) return;
+            for (let symbol in ASSETS) {
+                let asset = ASSETS[symbol];
+                let history = asset.history;
+                if (history.length < 3) continue;
+
+                let lastClose = history[history.length - 1].close;
+                let prevClose = history[history.length - 2].close;
+                let priceDiff = (lastClose - prevClose) / prevClose;
+                let holdQty = (currentUser.portfolio[symbol] && currentUser.portfolio[symbol].qty) || 0;
+
+                // Autonomous buy signal on price dip
+                if (priceDiff < -0.008 && currentUser.balance >= lastClose) {
+                    let qty = Math.floor((currentUser.balance * 0.15) / lastClose) || 1;
+                    executeTrade(symbol, 'buy', qty, true);
+                    logAI(`AUTONOMOUS BUY: ${symbol} x${qty} @ $${lastClose.toFixed(2)}`);
+                    aiHistory.unshift({ time: new Date().toLocaleTimeString(), op: 'BUY', symbol, qty, price: lastClose });
+                    renderAIHistory();
+                }
+                // Autonomous sell signal on gain
+                else if (priceDiff > 0.01 && holdQty > 0) {
+                    executeTrade(symbol, 'sell', holdQty, true);
+                    logAI(`AUTONOMOUS SELL: ${symbol} x${holdQty} @ $${lastClose.toFixed(2)}`);
+                    aiHistory.unshift({ time: new Date().toLocaleTimeString(), op: 'SELL', symbol, qty: holdQty, price: lastClose });
+                    renderAIHistory();
+                }
+            }
+        }
+
+        function renderAIHistory() {
+            const tbody = document.getElementById('ai-history-tbody');
+            tbody.innerHTML = '';
+            aiHistory.slice(0, 15).forEach(item => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.time}</td>
+                    <td class="${item.op === 'BUY' ? 'green' : 'red'}">${item.op}</td>
+                    <td><b>${item.symbol}</b></td>
+                    <td>${item.qty}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function setOrderType(type) {
+            orderType = type;
+            document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+            const activeTab = document.getElementById(type === 'buy' ? 'tab-buy' : 'tab-sell');
+            if (activeTab) activeTab.classList.add('active');
+
+            const btn = document.getElementById('order-submit-btn');
+            const t = I18N[currentLang];
+            btn.innerText = type === 'buy' ? t.buy : t.sell;
+            btn.className = 'btn-action ' + (type === 'buy' ? 'btn-buy' : 'btn-sell');
+        }
+
+        function updateOrderTotal() {
+            const qty = parseInt(document.getElementById('order-amount').value) || 0;
+            const total = qty * ASSETS[activeAsset].price;
+            document.getElementById('order-total-val').innerText = '$' + total.toFixed(2);
+        }
+
+        function executeManualOrder() {
+            const qty = parseInt(document.getElementById('order-amount').value) || 0;
+            if (qty <= 0) return;
+            executeTrade(activeAsset, orderType, qty, false);
+        }
+
+        function executeTrade(symbol, type, qty, isAI) {
+            const price = ASSETS[symbol].price;
+            const total = qty * price;
+
+            if (type === 'buy') {
+                if (currentUser.balance < total) {
+                    if (!isAI) alert(currentLang === 'ru' ? 'Недостаточно средств!' : 'Insufficient funds!');
+                    return;
+                }
+                currentUser.balance -= total;
+                if (!currentUser.portfolio[symbol]) {
+                    currentUser.portfolio[symbol] = { qty: 0, avgPrice: 0 };
+                }
+                let item = currentUser.portfolio[symbol];
+                let currentTotalCost = item.qty * item.avgPrice;
+                item.qty += qty;
+                item.avgPrice = (currentTotalCost + total) / item.qty;
+            } else {
+                if (!currentUser.portfolio[symbol] || currentUser.portfolio[symbol].qty < qty) {
+                    if (!isAI) alert(currentLang === 'ru' ? 'Недостаточно акций!' : 'Not enough assets!');
+                    return;
+                }
+                currentUser.balance += total;
+                currentUser.portfolio[symbol].qty -= qty;
+                if (currentUser.portfolio[symbol].qty === 0) {
+                    delete currentUser.portfolio[symbol];
+                }
+            }
+            saveUserData();
+        }
+
+        function renderPortfolioTable() {
+            const tbody = document.getElementById('portfolio-table-body');
+            tbody.innerHTML = '';
+            if (!currentUser) return;
+            for (let symbol in currentUser.portfolio) {
+                let item = currentUser.portfolio[symbol];
+                if (item.qty <= 0) continue;
+                let curPrice = ASSETS[symbol].price;
+                let profitLoss = (curPrice - item.avgPrice) * item.qty;
+                let plClass = profitLoss >= 0 ? 'green' : 'red';
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${symbol}</b></td>
+                    <td>${item.qty}</td>
+                    <td>$${item.avgPrice.toFixed(2)}</td>
+                    <td>$${curPrice.toFixed(2)}</td>
+                    <td class="${plClass}">$${profitLoss.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        let canvas, ctx;
+        function setupChartCanvas() {
+            canvas = document.getElementById('trade-chart');
+            ctx = canvas.getContext('2d');
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+        }
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            renderChart();
+        }
+
+        function renderChart() {
+            if (!ctx || !ASSETS[activeAsset]) return;
+            const width = canvas.width;
+            const height = canvas.height;
+            const history = ASSETS[activeAsset].history;
+
+            ctx.clearRect(0, 0, width, height);
+            if (history.length === 0) return;
+
+            let minPrice = Math.min(...history.map(h => h.low));
+            let maxPrice = Math.max(...history.map(h => h.high));
+            let priceRange = (maxPrice - minPrice) || 1;
+            const padding = 16;
+            const candleWidth = (width - padding * 2) / history.length;
+
+            ctx.strokeStyle = '#2b313a';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 4; i++) {
+                let y = (height / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            history.forEach((candle, idx) => {
+                let x = padding + idx * candleWidth + candleWidth / 2;
+                let openY = height - padding - ((candle.open - minPrice) / priceRange) * (height - padding * 2);
+                let closeY = height - padding - ((candle.close - minPrice) / priceRange) * (height - padding * 2);
+                let highY = height - padding - ((candle.high - minPrice) / priceRange) * (height - padding * 2);
+                let lowY = height - padding - ((candle.low - minPrice) / priceRange) * (height - padding * 2);
+
+                let isGreen = candle.close >= candle.open;
+                ctx.strokeStyle = isGreen ? '#0ecb81' : '#f6465d';
+                ctx.fillStyle = isGreen ? '#0ecb81' : '#f6465d';
+
+                ctx.beginPath();
+                ctx.moveTo(x, highY);
+                ctx.lineTo(x, lowY);
+                ctx.stroke();
+
+                let bodyTop = Math.min(openY, closeY);
+                let bodyHeight = Math.max(2, Math.abs(closeY - openY));
+                ctx.fillRect(x - candleWidth * 0.3, bodyTop, candleWidth * 0.6, bodyHeight);
+            });
+        }
+
+        function renderAssetButtons() {
+            const container = document.getElementById('asset-selector');
+            container.innerHTML = '';
+            for (let symbol in ASSETS) {
+                let btn = document.createElement('button');
+                btn.className = 'btn-action' + (symbol === activeAsset ? ' active' : '');
+                btn.style.cssText = `margin:0; padding:4px 8px; width:auto; font-size: 11px; background: ${symbol === activeAsset ? 'var(--bg-hover)' : 'var(--bg-dark)'}; color: var(--text-main); border: 1px solid var(--border-color);`;
+                btn.innerText = symbol;
+                btn.onclick = () => {
+                    activeAsset = symbol;
+                    renderAssetButtons();
+                    renderChart();
+                    updateOrderTotal();
+                };
+                container.appendChild(btn);
+            }
+            document.getElementById('current-price-display').innerText = '$' + ASSETS[activeAsset].price.toFixed(2);
+        }
+
+        function renderTickerBar() {
+            const container = document.getElementById('ticker-bar');
+            container.innerHTML = '';
+            for (let symbol in ASSETS) {
+                let asset = ASSETS[symbol];
+                let item = document.createElement('div');
+                item.className = 'ticker-item';
+                item.innerHTML = `<span>${symbol}</span> <b class="${asset.price >= 100 ? 'green' : 'red'}">$${asset.price.toFixed(2)}</b>`;
+                container.appendChild(item);
+            }
+        }
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+
+            const section = document.getElementById('view-' + viewName);
+            if (section) section.classList.add('active');
+
+            const navBtn = document.getElementById('nav-' + viewName);
+            if (navBtn) navBtn.classList.add('active');
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+            if (viewName === 'trade') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function walletDeposit() {
+            const val = parseFloat(document.getElementById('wallet-amount').value) || 0;
+            if (val <= 0) return;
+            currentUser.balance += val;
+            saveUserData();
+            alert(currentLang === 'ru' ? 'Счет успешно пополнен!' : 'Deposit successful!');
+        }
+
+        function openWithdrawModal() {
+            document.getElementById('withdraw-modal').style.display = 'flex';
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdraw-modal').style.display = 'none';
+        }
+
+        function confirmWithdraw() {
+            const val = parseFloat(document.getElementById('wallet-amount').value) || 0;
+            if (val <= 0 || val > currentUser.balance) {
+                alert(currentLang === 'ru' ? 'Недостаточно средств!' : 'Insufficient balance!');
+                return;
+            }
+            currentUser.balance -= val;
+            saveUserData();
+            closeWithdrawModal();
+            alert(currentLang === 'ru' ? 'Успешный вывод средств на банковскую карту!' : 'Withdrawal successfully executed!');
+        }
+
+        function selectAvatarText(code) {
+            document.querySelectorAll('.avatar-option').forEach(e => e.classList.remove('selected'));
+            event.target.classList.add('selected');
+            currentUser.avatar = code;
+            currentUser.avatarType = 'text';
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentUser.avatar = e.target.result;
+                currentUser.avatarType = 'image';
+                updateUserUI();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveProfileSettings() {
+            saveUserData();
+            alert(currentLang === 'ru' ? 'Настройки профиля сохранены!' : 'Profile settings saved!');
+        }
+
+        function resetAccountData() {
+            if (confirm(currentLang === 'ru' ? 'Сбросить баланс и данные?' : 'Reset account data?')) {
+                currentUser.balance = 10000.00;
+                currentUser.portfolio = {};
+                saveUserData();
+                alert(currentLang === 'ru' ? 'Данные аккаунта сброшены!' : 'Account reset complete!');
+            }
+        }
+    </script>
+</body>
+
+</html>
