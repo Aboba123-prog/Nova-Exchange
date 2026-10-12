@@ -38,7 +38,6 @@
             font-size: 13px;
         }
 
-        /* --- AUTH OVERLAY --- */
         #auth-overlay {
             position: fixed;
             top: 0;
@@ -56,9 +55,9 @@
         .auth-box {
             background: var(--bg-panel);
             border: 1px solid var(--border-color);
-            padding: 20px;
+            padding: 24px;
             width: 100%;
-            max-width: 340px;
+            max-width: 360px;
         }
 
         .auth-title {
@@ -72,12 +71,12 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             color: var(--text-muted);
             font-size: 11px;
         }
@@ -98,29 +97,6 @@
             border-color: var(--accent);
         }
 
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 8px;
-            text-align: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            background: transparent;
-            border: none;
-            font-size: 12px;
-        }
-
-        .auth-tab.active {
-            color: var(--accent);
-            border-bottom: 2px solid var(--accent);
-            font-weight: bold;
-        }
-
         .btn-submit {
             width: 100%;
             padding: 12px;
@@ -137,7 +113,6 @@
             opacity: 0.8;
         }
 
-        /* --- LAYOUT --- */
         #app {
             display: flex;
             width: 100vw;
@@ -146,7 +121,7 @@
         }
 
         sidebar {
-            width: 200px;
+            width: 210px;
             background: var(--bg-panel);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -156,12 +131,15 @@
         }
 
         .logo {
-            padding: 14px;
+            padding: 16px;
             font-size: 14px;
             font-weight: bold;
             color: var(--accent);
             border-bottom: 1px solid var(--border-color);
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .nav-list {
@@ -171,7 +149,7 @@
         }
 
         .nav-item {
-            padding: 12px 14px;
+            padding: 12px 16px;
             color: var(--text-muted);
             cursor: pointer;
             display: flex;
@@ -192,13 +170,13 @@
         }
 
         .user-panel {
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-top: 1px solid var(--border-color);
             font-size: 11px;
             background: var(--bg-dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .avatar-preview {
@@ -227,14 +205,14 @@
         }
 
         header {
-            height: 44px;
-            min-height: 44px;
+            height: 48px;
+            min-height: 48px;
             background: var(--bg-panel);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 12px;
+            padding: 0 16px;
         }
 
         .menu-toggle {
@@ -250,24 +228,24 @@
 
         .ticker-bar {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
 
         .ticker-item {
             display: flex;
-            gap: 4px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 12px;
             white-space: nowrap;
         }
 
         .view-section {
             display: none;
-            padding: 12px;
+            padding: 16px;
             flex: 1;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .view-section.active {
@@ -276,15 +254,15 @@
 
         .trade-grid {
             display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 12px;
+            grid-template-columns: 1fr 300px;
+            gap: 16px;
             flex: 1;
         }
 
         .panel {
             background: var(--bg-panel);
             border: 1px solid var(--border-color);
-            padding: 10px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
         }
@@ -292,15 +270,15 @@
         .panel-title {
             font-size: 11px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--text-muted);
             text-transform: uppercase;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 4px;
+            padding-bottom: 6px;
         }
 
         #chart-container {
-            height: 260px;
+            height: 280px;
             width: 100%;
             position: relative;
             background: #161a1e;
@@ -314,8 +292,8 @@
 
         .order-tabs {
             display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .order-tab {
@@ -343,11 +321,11 @@
 
         .btn-action {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 10px;
             font-size: 12px;
         }
 
@@ -371,12 +349,12 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         th,
         td {
-            padding: 6px 8px;
+            padding: 8px 10px;
             border-bottom: 1px solid var(--border-color);
             white-space: nowrap;
         }
@@ -398,24 +376,24 @@
             height: 180px;
             overflow-y: auto;
             background: var(--bg-dark);
-            padding: 8px;
+            padding: 10px;
             border: 1px solid var(--border-color);
             font-family: monospace;
-            font-size: 10px;
+            font-size: 11px;
             line-height: 1.4;
         }
 
         .avatar-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .avatar-option {
             background: var(--bg-dark);
             border: 1px solid var(--border-color);
-            padding: 8px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
             font-weight: bold;
@@ -427,7 +405,51 @@
             color: var(--accent);
         }
 
-        /* Responsive Mobile Layout (iPhone SE & Mobile) */
+        .wallet-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .wallet-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wallet-badges {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .wallet-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+        }
+
+        .wallet-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .wallet-grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 900px;
+        }
+
         @media (max-width: 768px) {
             sidebar {
                 position: fixed;
@@ -450,13 +472,17 @@
                 grid-template-columns: 1fr;
             }
 
+            .wallet-grid-layout {
+                grid-template-columns: 1fr;
+            }
+
             #chart-container {
-                height: 220px;
+                height: 240px;
             }
 
             .view-section {
-                padding: 8px;
-                gap: 8px;
+                padding: 12px;
+                gap: 12px;
             }
         }
     </style>
@@ -464,14 +490,9 @@
 
 <body>
 
-    <!-- AUTH OVERLAY -->
     <div id="auth-overlay">
         <div class="auth-box">
-            <div class="auth-title" id="auth-header-title">Вход в систему</div>
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tab-login" onclick="setAuthMode('login')">Вход</button>
-                <button class="auth-tab" id="tab-register" onclick="setAuthMode('register')">Регистрация</button>
-            </div>
+            <div class="auth-title" id="auth-header-title">Вход / Регистрация</div>
             <form id="auth-form" onsubmit="handleAuth(event)">
                 <div class="form-group">
                     <label id="lbl-login">Логин</label>
@@ -481,19 +502,26 @@
                     <label id="lbl-password">Пароль</label>
                     <input type="password" id="auth-password" class="form-input" required>
                 </div>
-                <button type="submit" class="btn-submit" id="auth-btn-label">Войти</button>
+                <button type="submit" class="btn-submit" id="auth-btn-label">Войти в аккаунт</button>
             </form>
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="app">
         <sidebar id="sidebar">
-            <div class="logo">NOVA EXCHANGE</div>
+            <div class="logo">
+                <svg width="18" height="18" viewBox="0 0 100 100">
+                    <rect width="100" height="100" fill="#12161c" rx="16" />
+                    <rect x="24" y="24" width="12" height="52" fill="#eaecef" />
+                    <rect x="64" y="24" width="12" height="52" fill="#eaecef" />
+                    <polygon points="36,24 64,60 64,76 36,40" fill="#f0b90b" />
+                </svg>
+                NOVA EXCHANGE
+            </div>
             <ul class="nav-list">
                 <li class="nav-item active" id="nav-trade" onclick="switchView('trade')">Торговля</li>
-                <li class="nav-item" id="nav-ai" onclick="switchView('ai')">ИИ Автопилот</li>
-                <li class="nav-item" id="nav-wallet" onclick="switchView('wallet')">Кошелек</li>
+                <li class="nav-item" id="nav-ai" onclick="switchView('ai')">Xerox ИИ</li>
+                <li class="nav-item" id="nav-wallet" onclick="switchView('wallet')">Кошельки</li>
                 <li class="nav-item" id="nav-profile" onclick="switchView('profile')">Профиль</li>
                 <li class="nav-item" id="nav-settings" onclick="switchView('settings')">Настройки</li>
             </ul>
@@ -516,15 +544,14 @@
                     id="btn-logout" onclick="logout()">Выход</button>
             </header>
 
-            <!-- TRADE VIEW -->
             <div id="view-trade" class="view-section active">
                 <div class="trade-grid">
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
                         <div class="panel" style="flex: 1;">
                             <div
-                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                <div style="display: flex; gap: 4px;" id="asset-selector"></div>
-                                <div id="current-price-display" style="font-size: 14px; font-weight: bold;">$0.00</div>
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="display: flex; gap: 6px;" id="asset-selector"></div>
+                                <div id="current-price-display" style="font-size: 15px; font-weight: bold;">$0.00</div>
                             </div>
                             <div id="chart-container">
                                 <canvas id="trade-chart"></canvas>
@@ -561,7 +588,7 @@
                             <input type="number" id="order-amount" class="form-input" value="1" min="1"
                                 oninput="updateOrderTotal()">
                         </div>
-                        <div style="margin: 8px 0; color: var(--text-muted); font-size: 11px;">
+                        <div style="margin: 10px 0; color: var(--text-muted); font-size: 11px;">
                             <span id="lbl-order-total">Общая сумма:</span> <b id="order-total-val"
                                 style="color: var(--text-main);">$0.00</b>
                         </div>
@@ -571,28 +598,34 @@
                 </div>
             </div>
 
-            <!-- AI VIEW -->
             <div id="view-ai" class="view-section">
                 <div class="panel">
                     <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
                         <div>
-                            <div style="font-size: 13px; font-weight: bold;" id="lbl-ai-title">Автономный ИИ-Трейдер
-                            </div>
-                            <div style="color: var(--text-muted); font-size: 10px;" id="lbl-ai-sub">ИИ самостоятельно
-                                управляет балансом и позициями на рынке.</div>
+                            <div style="font-size: 14px; font-weight: bold;" id="lbl-ai-title">Xerox ИИ Помощник</div>
+                            <div style="color: var(--text-muted); font-size: 11px;" id="lbl-ai-sub">Интеллектуальная
+                                система анализа рисков и автопилот.</div>
                         </div>
                         <button id="ai-toggle-btn" class="btn-submit"
-                            style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;"
+                            style="width: auto; padding: 8px 16px; margin: 0; font-size: 12px;"
                             onclick="toggleAI()">Включить ИИ</button>
                     </div>
-                    <div style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);" id="lbl-ai-log-title">
-                        Журнал торговых операций ИИ:</div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="ai-safety-mode" onchange="toggleSafetyMode(this.checked)">
+                            <span id="lbl-safety-text">Режим Xerox: Обезопасить меня от невыгодных сделок (предупреждать
+                                перед покупкой)</span>
+                        </label>
+                    </div>
+                    <div style="font-size: 11px; margin-bottom: 6px; color: var(--text-muted);" id="lbl-ai-log-title">
+                        Журнал помощника Xerox:</div>
                     <div class="ai-log" id="ai-log-container"></div>
                 </div>
 
                 <div class="panel">
-                    <div class="panel-title" id="lbl-ai-history-title">История сделок ИИ</div>
+                    <div class="panel-title" id="lbl-ai-history-title">История сделок Xerox ИИ</div>
                     <div class="table-responsive">
                         <table>
                             <thead>
@@ -610,33 +643,41 @@
                 </div>
             </div>
 
-            <!-- WALLET VIEW -->
             <div id="view-wallet" class="view-section">
-                <div class="panel" style="max-width: 450px;">
-                    <div class="panel-title" id="lbl-wallet-title">Управление кошельком</div>
-                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
-                        <span id="lbl-wallet-bal">Баланс:</span> <span id="wallet-balance-val"
-                            class="green">$0.00</span>
+                <div class="wallet-grid-layout">
+                    <div class="panel">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div class="panel-title" style="margin:0;" id="lbl-wallet-title">Список кошельков</div>
+                            <button class="btn-submit"
+                                style="width: auto; padding: 6px 12px; margin: 0; font-size: 11px;"
+                                onclick="createNewWallet()">+ Создать кошелек</button>
+                        </div>
+                        <div id="wallets-container"></div>
                     </div>
 
-                    <div class="form-group">
-                        <label id="lbl-wallet-amt">Сумма операции ($)</label>
-                        <input type="number" id="wallet-amount" class="form-input" value="500" min="50">
-                    </div>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                        <button class="btn-submit" style="margin:0;" id="btn-deposit"
-                            onclick="walletDeposit()">Пополнить</button>
-                        <button class="btn-action"
-                            style="margin:0; background: var(--bg-dark); color: var(--text-main); border: 1px solid var(--border-color);"
-                            id="btn-withdraw" onclick="openWithdrawModal()">Вывести средства</button>
+                    <div class="panel">
+                        <div class="panel-title" id="lbl-transfer-title">Перевод между кошельками</div>
+                        <div class="form-group">
+                            <label id="lbl-from-wallet">Откуда</label>
+                            <select id="transfer-from" class="form-select"></select>
+                        </div>
+                        <div class="form-group">
+                            <label id="lbl-to-wallet">Куда</label>
+                            <select id="transfer-to" class="form-select"></select>
+                        </div>
+                        <div class="form-group">
+                            <label id="lbl-transfer-amt">Сумма ($)</label>
+                            <input type="number" id="transfer-amount" class="form-input" value="100" min="1">
+                        </div>
+                        <button class="btn-submit" onclick="executeTransfer()"
+                            id="btn-transfer-action">Перевести</button>
                     </div>
                 </div>
             </div>
 
-            <!-- PROFILE VIEW -->
             <div id="view-profile" class="view-section">
-                <div class="panel" style="max-width: 450px;">
+                <div class="panel" style="max-width: 480px;">
                     <div class="panel-title" id="lbl-profile-title">Настройки профиля и аватар</div>
 
                     <div class="form-group">
@@ -655,14 +696,18 @@
                             onchange="handleAvatarUpload(event)">
                     </div>
 
+                    <div class="form-group">
+                        <label id="lbl-change-username">Изменить имя пользователя</label>
+                        <input type="text" id="profile-new-username" class="form-input">
+                    </div>
+
                     <button class="btn-submit" id="btn-save-profile" onclick="saveProfileSettings()">Сохранить
                         профиль</button>
                 </div>
             </div>
 
-            <!-- SETTINGS VIEW -->
             <div id="view-settings" class="view-section">
-                <div class="panel" style="max-width: 450px;">
+                <div class="panel" style="max-width: 480px;">
                     <div class="panel-title" id="lbl-settings-title">Параметры терминала</div>
                     <div class="form-group">
                         <label id="lbl-lang-select">Язык интерфейса</label>
@@ -680,7 +725,7 @@
                             <option value="200">5x (Максимальная)</option>
                         </select>
                     </div>
-                    <div style="margin-top: 12px;">
+                    <div style="margin-top: 14px;">
                         <button class="btn-action"
                             style="background: transparent; border: 1px solid var(--red); color: var(--red);"
                             id="btn-reset-data" onclick="resetAccountData()">Сбросить данные аккаунта</button>
@@ -690,107 +735,89 @@
         </main>
     </div>
 
-    <!-- WITHDRAW MODAL -->
-    <div id="withdraw-modal"
-        style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:10000; padding: 12px;">
-        <div class="panel" style="width: 100%; max-width: 320px;">
-            <div class="panel-title" id="lbl-modal-title">Вывод средств на банк</div>
-            <div class="form-group">
-                <label id="lbl-select-bank">Выберите банк</label>
-                <select class="form-select" id="withdraw-bank">
-                    <option>Kapital Bank / International Bank</option>
-                    <option>Visa / Mastercard Card</option>
-                    <option>Bank Transfer</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label id="lbl-card-num">Номер карты / счета</label>
-                <input type="text" class="form-input" placeholder="0000 0000 0000 0000">
-            </div>
-            <button class="btn-submit" id="btn-confirm-withdraw" onclick="confirmWithdraw()">Подтвердить вывод</button>
-            <button class="btn-action"
-                style="background: transparent; color: var(--text-muted); border: none; margin-top: 6px;"
-                id="btn-cancel-withdraw" onclick="closeWithdrawModal()">Отмена</button>
-        </div>
-    </div>
-
     <script>
         const I18N = {
             ru: {
-                authTitleLogin: "Вход в систему", authTitleReg: "Создание аккаунта",
-                login: "Вход", register: "Регистрация", username: "Логин", password: "Пароль",
-                navTrade: "Торговля", navAI: "ИИ Автопилот", navWallet: "Кошелек", navProfile: "Профиль", navSettings: "Настройки",
+                authTitle: "Вход / Регистрация", authBtn: "Войти в аккаунт", username: "Логин", password: "Пароль",
+                navTrade: "Торговля", navAI: "Xerox ИИ", navWallet: "Кошельки", navProfile: "Профиль", navSettings: "Настройки",
                 logout: "Выход", portfolioTitle: "Портфель активов", createOrder: "Создать ордер",
                 buy: "Покупка", sell: "Продажа", qty: "Количество лотов", total: "Общая сумма:",
-                aiTitle: "Автономный ИИ-Трейдер", aiSub: "ИИ самостоятельно управляет балансом и позициями на рынке.",
-                startAI: "Включить ИИ", stopAI: "Остановить ИИ", aiLogTitle: "Журнал торговых операций ИИ:",
-                aiHistoryTitle: "История сделок ИИ", walletTitle: "Управление кошельком", balance: "Баланс:",
-                operationAmt: "Сумма операции ($)", deposit: "Пополнить", withdraw: "Вывести средства",
+                aiTitle: "Xerox ИИ Помощник", aiSub: "Интеллектуальная система анализа рисков и автопилот.",
+                startAI: "Включить ИИ", stopAI: "Остановить ИИ", aiLogTitle: "Журнал помощника Xerox:",
+                aiHistoryTitle: "История сделок Xerox ИИ", walletTitle: "Список кошельков", balance: "Баланс:",
                 profileTitle: "Настройки профиля и аватар", selectAvatar: "Выберите стандартный аватар",
                 uploadAvatar: "Или загрузите свое фото/картинку", saveProfile: "Сохранить профиль",
                 settingsTitle: "Параметры терминала", langSelect: "Язык интерфейса", simSpeed: "Скорость симуляции рынка",
-                resetData: "Сбросить данные аккаунта", modalTitle: "Вывод средств на банк", selectBank: "Выберите банк",
-                cardNum: "Номер карты / счета", confirm: "Подтвердить вывод", cancel: "Отмена",
-                asset: "Актив", qtyCol: "Кол-во", avgCol: "Ср. Цена", curCol: "Текущая", plCol: "Прибыль/Убыток",
-                timeCol: "Время", opCol: "Операция", volCol: "Объем", priceCol: "Цена"
+                resetData: "Сбросить данные аккаунта", asset: "Актив", qtyCol: "Кол-во", avgCol: "Ср. Цена", curCol: "Текущая", plCol: "Прибыль/Убыток",
+                timeCol: "Время", opCol: "Операция", volCol: "Объем", priceCol: "Цена",
+                transferTitle: "Перевод между кошельками", fromWallet: "Откуда", toWallet: "Куда", transferAmt: "Сумма ($)", transferBtn: "Перевести",
+                safetyText: "Режим Xerox: Обезопасить меня от невыгодных сделок (предупреждать перед покупкой)",
+                newWallet: "+ Создать кошелек", changeUsername: "Изменить имя пользователя", freeze: "Заморозить", unfreeze: "Разморозить", delete: "Удалить"
             },
             en: {
-                authTitleLogin: "System Login", authTitleReg: "Create Account",
-                login: "Login", register: "Register", username: "Username", password: "Password",
-                navTrade: "Trading", navAI: "AI Autopilot", navWallet: "Wallet", navProfile: "Profile", navSettings: "Settings",
+                authTitle: "Login / Register", authBtn: "Enter Account", username: "Username", password: "Password",
+                navTrade: "Trading", navAI: "Xerox AI", navWallet: "Wallets", navProfile: "Profile", navSettings: "Settings",
                 logout: "Logout", portfolioTitle: "Asset Portfolio", createOrder: "Create Order",
                 buy: "Buy", sell: "Sell", qty: "Quantity", total: "Total Amount:",
-                aiTitle: "Autonomous AI Trader", aiSub: "AI autonomously manages balance and market positions.",
-                startAI: "Enable AI", stopAI: "Disable AI", aiLogTitle: "AI Operation Log:",
-                aiHistoryTitle: "AI Trade History", walletTitle: "Wallet Management", balance: "Balance:",
-                operationAmt: "Amount ($)", deposit: "Deposit", withdraw: "Withdraw Funds",
+                aiTitle: "Xerox AI Assistant", aiSub: "Intelligent risk analysis and autopilot system.",
+                startAI: "Enable AI", stopAI: "Disable AI", aiLogTitle: "Xerox Assistant Log:",
+                aiHistoryTitle: "Xerox AI Trade History", walletTitle: "Wallets List", balance: "Balance:",
                 profileTitle: "Profile Settings & Avatar", selectAvatar: "Select Standard Avatar",
                 uploadAvatar: "Or Upload Custom Photo", saveProfile: "Save Profile",
                 settingsTitle: "Terminal Settings", langSelect: "Interface Language", simSpeed: "Market Simulation Speed",
-                resetData: "Reset Account Data", modalTitle: "Bank Withdrawal", selectBank: "Select Bank",
-                cardNum: "Card / Account Number", confirm: "Confirm Withdrawal", cancel: "Cancel",
-                asset: "Asset", qtyCol: "Qty", avgCol: "Avg Price", curCol: "Current", plCol: "P/L",
-                timeCol: "Time", opCol: "Operation", volCol: "Volume", priceCol: "Price"
+                resetData: "Reset Account Data", asset: "Asset", qtyCol: "Qty", avgCol: "Avg Price", curCol: "Current", plCol: "P/L",
+                timeCol: "Time", opCol: "Operation", volCol: "Volume", priceCol: "Price",
+                transferTitle: "Wallet Transfer", fromWallet: "From", toWallet: "To", transferAmt: "Amount ($)", transferBtn: "Transfer",
+                safetyText: "Xerox Mode: Protect me from unprofitable deals (warn before buying)",
+                newWallet: "+ Create Wallet", changeUsername: "Change Username", freeze: "Freeze", unfreeze: "Unfreeze", delete: "Delete"
             },
             az: {
-                authTitleLogin: "Sistemə Giriş", authTitleReg: "Hesab Yarat",
-                login: "Daxil ol", register: "Qeydiyyat", username: "İstifadəçi adı", password: "Şifrə",
-                navTrade: "Ticarət", navAI: "Sİ Avtopilot", navWallet: "Rəqəmsal Qovluq", navProfile: "Profil", navSettings: "Tənzimləmələr",
+                authTitle: "Daxil ol / Qeydiyyat", authBtn: "Hesaba daxil ol", username: "İstifadəçi adı", password: "Şifrə",
+                navTrade: "Ticarət", navAI: "Xerox Sİ", navWallet: "Cüzdanlar", navProfile: "Profil", navSettings: "Tənzimləmələr",
                 logout: "Çıxış", portfolioTitle: "Aktiv Portfeli", createOrder: "Order Yarat",
                 buy: "Alış", sell: "Satış", qty: "Miqdar", total: "Ümumi Məbləğ:",
-                aiTitle: "Müstəqil Sİ-Treyder", aiSub: "Sİ balansı və bazardakı mövqeləri müstəqil idarə edir.",
-                startAI: "Sİ İşə Sal", stopAI: "Sİ Dayan", aiLogTitle: "Sİ Əməliyyat Jurnalı:",
-                aiHistoryTitle: "Sİ Ticarət Tarixçəsi", walletTitle: "Balans İdarəetməsi", balance: "Balans:",
-                operationAmt: "Əməliyyat Məbləği ($)", deposit: "Artır", withdraw: "Məbləği Çıxar",
+                aiTitle: "Xerox Sİ Köməkçisi", aiSub: "Ağıllı risk təhlili və avtopilot sistemi.",
+                startAI: "Sİ İşə Sal", stopAI: "Sİ Dayan", aiLogTitle: "Xerox Jurnalı:",
+                aiHistoryTitle: "Xerox Sİ Tarixçəsi", walletTitle: "Cüzdan Siyahısı", balance: "Balans:",
                 profileTitle: "Profil Tənzimləmələri və Avatar", selectAvatar: "Standart Avatar Seç",
                 uploadAvatar: "Və ya Öz Şəklini Yüklə", saveProfile: "Yadda Saxla",
-                settingsTitle: "Terminal Tənzimləmələri", langSelect: "Interfeys Dili", simSpeed: "Bazar Simulyasiya Sürəti",
-                resetData: "Hesab Məlumatlarını Sıfırla", modalTitle: "Banka Məbləğ Çıxarılması", selectBank: "Bankı Seçin",
-                cardNum: "Kart / Hesab Nömrəsi", confirm: "Çıxarışı Təsdiqlə", cancel: "Ləğv Et",
-                asset: "Aktiv", qtyCol: "Say", avgCol: "Orta Qiymət", curCol: "Cari", plCol: "Mənfəət/Zərər",
-                timeCol: "Vaxt", opCol: "Əməliyyat", volCol: "Həcm", priceCol: "Qiymət"
+                settingsTitle: "Terminal Tənzimləmələri", langSelect: "İnterfeys Dili", simSpeed: "Bazar Simulyasiya Sürəti",
+                resetData: "Hesab Məlumatlarını Sıfırla", asset: "Aktiv", qtyCol: "Say", avgCol: "Orta Qiymət", curCol: "Cari", plCol: "Mənfəət/Zərər",
+                timeCol: "Vaxt", opCol: "Əməliyyat", volCol: "Həcm", priceCol: "Qiymət",
+                transferTitle: "Cüzdanlararası Köçürmə", fromWallet: "Haradan", toWallet: "Haraya", transferAmt: "Məbləğ ($)", transferBtn: "Köçür",
+                safetyText: "Xerox Rejimi: Məni zərərli əməliyyatlardan qoru (alışdan əvvəl xəbərdar et)",
+                newWallet: "+ Cüzdan yarat", changeUsername: "İstifadəçi adını dəyiş", freeze: "Dondur", unfreeze: "Aç", delete: "Sil"
             }
         };
 
+        const GLOBAL_SHARED_SEED = 1337;
+        function getPseudoRandom(seed) {
+            let x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
         let currentLang = 'ru';
-        let currentAuthMode = 'login';
         let currentUser = null;
         let activeAsset = 'NXD';
         let orderType = 'buy';
         let aiActive = false;
+        let aiSafetyMode = false;
         let simSpeed = 1000;
         let simTimer = null;
         let aiHistory = [];
+        let globalTickCount = 0;
 
         const ASSETS = {
             'NXD': { name: 'Nova Dynamics', price: 100.00, history: [] },
             'APE': { name: 'Apex Energy', price: 45.50, history: [] },
             'CYBR': { name: 'Cyber Robotics', price: 210.20, history: [] },
-            'OBT': { name: 'Orbital Tech', price: 12.80, history: [] }
+            'OBT': { name: 'Orbital Tech', price: 12.80, history: [] },
+            'QNT': { name: 'Quantum AI', price: 345.00, history: [] },
+            'BLS': { name: 'Biolab Systems', price: 88.40, history: [] }
         };
 
         window.onload = () => {
-            initMarketHistory();
+            initDeterministicMarket();
             checkSession();
             setupChartCanvas();
             renderAssetButtons();
@@ -814,6 +841,11 @@
                 if (users[session.username]) {
                     currentUser = users[session.username];
                     if (!currentUser.avatar) currentUser.avatar = 'N';
+                    if (!currentUser.wallets || currentUser.wallets.length === 0) {
+                        currentUser.wallets = [
+                            { id: 'w1', name: 'Основной', balance: 10000.00, frozen: false, isSpend: true, isDeposit: true }
+                        ];
+                    }
                     document.getElementById('auth-overlay').style.display = 'none';
                     updateUserUI();
                     applyTranslations();
@@ -823,37 +855,38 @@
             document.getElementById('auth-overlay').style.display = 'flex';
         }
 
-        function setAuthMode(mode) {
-            currentAuthMode = mode;
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            const activeTab = document.getElementById(mode === 'login' ? 'tab-login' : 'tab-register');
-            if (activeTab) activeTab.classList.add('active');
-
-            const t = I18N[currentLang];
-            document.getElementById('auth-header-title').innerText = mode === 'login' ? t.authTitleLogin : t.authTitleReg;
-            document.getElementById('auth-btn-label').innerText = mode === 'login' ? t.login : t.register;
-        }
-
         function handleAuth(e) {
             e.preventDefault();
             const u = document.getElementById('auth-username').value.trim();
             const p = document.getElementById('auth-password').value.trim();
             const users = getStorage('users', {});
 
-            if (currentAuthMode === 'register') {
-                if (users[u]) {
-                    alert(currentLang === 'ru' ? 'Пользователь уже существует!' : 'User already exists!');
+            if (users[u]) {
+                if (users[u].password !== p) {
+                    alert(currentLang === 'ru' ? 'Неверный пароль!' : 'Wrong password!');
                     return;
                 }
-                users[u] = { username: u, password: p, balance: 10000.00, portfolio: {}, avatar: 'N', avatarType: 'text' };
-                setStorage('users', users);
                 currentUser = users[u];
             } else {
-                if (!users[u] || users[u].password !== p) {
-                    alert(currentLang === 'ru' ? 'Неверный логин или пароль!' : 'Invalid credentials!');
-                    return;
-                }
-                currentUser = users[u];
+                currentUser = {
+                    username: u,
+                    password: p,
+                    balance: 10000.00,
+                    portfolio: {},
+                    avatar: 'N',
+                    avatarType: 'text',
+                    wallets: [
+                        { id: 'w1', name: 'Основной', balance: 10000.00, frozen: false, isSpend: true, isDeposit: true }
+                    ]
+                };
+                users[u] = currentUser;
+                setStorage('users', users);
+            }
+
+            if (!currentUser.wallets || currentUser.wallets.length === 0) {
+                currentUser.wallets = [
+                    { id: 'w1', name: 'Основной', balance: currentUser.balance || 10000, frozen: false, isSpend: true, isDeposit: true }
+                ];
             }
 
             setStorage('session', { username: currentUser.username });
@@ -869,6 +902,7 @@
 
         function saveUserData() {
             if (!currentUser) return;
+            currentUser.balance = currentUser.wallets.reduce((sum, w) => sum + w.balance, 0);
             const users = getStorage('users', {});
             users[currentUser.username] = currentUser;
             setStorage('users', users);
@@ -877,9 +911,11 @@
 
         function updateUserUI() {
             if (!currentUser) return;
+            let totalBal = currentUser.wallets.reduce((s, w) => s + w.balance, 0);
+            currentUser.balance = totalBal;
+
             document.getElementById('user-display-name').innerText = currentUser.username;
-            document.getElementById('user-display-balance').innerText = '$' + currentUser.balance.toFixed(2);
-            document.getElementById('wallet-balance-val').innerText = '$' + currentUser.balance.toFixed(2);
+            document.getElementById('user-display-balance').innerText = '$' + totalBal.toFixed(2);
 
             const avatarBox = document.getElementById('sidebar-avatar');
             if (currentUser.avatarType === 'image') {
@@ -890,6 +926,8 @@
                 avatarBox.innerText = currentUser.avatar || 'N';
             }
 
+            renderWalletsManagement();
+            renderWalletSelects();
             renderPortfolioTable();
             updateOrderTotal();
         }
@@ -901,10 +939,8 @@
 
         function applyTranslations() {
             const t = I18N[currentLang];
-            document.getElementById('tab-login').innerText = t.login;
-            document.getElementById('tab-register').innerText = t.register;
-            document.getElementById('auth-header-title').innerText = currentAuthMode === 'login' ? t.authTitleLogin : t.authTitleReg;
-            document.getElementById('auth-btn-label').innerText = currentAuthMode === 'login' ? t.login : t.register;
+            document.getElementById('auth-header-title').innerText = t.authTitle;
+            document.getElementById('auth-btn-label').innerText = t.authBtn;
             document.getElementById('lbl-login').innerText = t.username;
             document.getElementById('lbl-password').innerText = t.password;
 
@@ -926,28 +962,25 @@
             document.getElementById('lbl-ai-sub').innerText = t.aiSub;
             document.getElementById('lbl-ai-log-title').innerText = t.aiLogTitle;
             document.getElementById('lbl-ai-history-title').innerText = t.aiHistoryTitle;
+            document.getElementById('lbl-safety-text').innerText = t.safetyText;
 
             document.getElementById('lbl-wallet-title').innerText = t.walletTitle;
-            document.getElementById('lbl-wallet-bal').innerText = t.balance;
-            document.getElementById('lbl-wallet-amt').innerText = t.operationAmt;
-            document.getElementById('btn-deposit').innerText = t.deposit;
-            document.getElementById('btn-withdraw').innerText = t.withdraw;
+            document.getElementById('lbl-transfer-title').innerText = t.transferTitle;
+            document.getElementById('lbl-from-wallet').innerText = t.fromWallet;
+            document.getElementById('lbl-to-wallet').innerText = t.toWallet;
+            document.getElementById('lbl-transfer-amt').innerText = t.transferAmt;
+            document.getElementById('btn-transfer-action').innerText = t.transferBtn;
 
             document.getElementById('lbl-profile-title').innerText = t.profileTitle;
             document.getElementById('lbl-select-avatar').innerText = t.selectAvatar;
             document.getElementById('lbl-upload-avatar').innerText = t.uploadAvatar;
+            document.getElementById('lbl-change-username').innerText = t.changeUsername;
             document.getElementById('btn-save-profile').innerText = t.saveProfile;
 
             document.getElementById('lbl-settings-title').innerText = t.settingsTitle;
             document.getElementById('lbl-lang-select').innerText = t.langSelect;
             document.getElementById('lbl-sim-speed').innerText = t.simSpeed;
             document.getElementById('btn-reset-data').innerText = t.resetData;
-
-            document.getElementById('lbl-modal-title').innerText = t.modalTitle;
-            document.getElementById('lbl-select-bank').innerText = t.selectBank;
-            document.getElementById('lbl-card-num').innerText = t.cardNum;
-            document.getElementById('btn-confirm-withdraw').innerText = t.confirm;
-            document.getElementById('btn-cancel-withdraw').innerText = t.cancel;
 
             document.getElementById('th-asset').innerText = t.asset;
             document.getElementById('th-qty').innerText = t.qtyCol;
@@ -966,35 +999,41 @@
             setOrderType(orderType);
         }
 
-        function initMarketHistory() {
+        function initDeterministicMarket() {
+            let seed = GLOBAL_SHARED_SEED;
             for (let symbol in ASSETS) {
-                let basePrice = ASSETS[symbol].price;
-                for (let i = 0; i < 30; i++) {
-                    let open = basePrice;
-                    let change = (Math.random() - 0.49) * (basePrice * 0.03);
+                let price = ASSETS[symbol].price;
+                ASSETS[symbol].history = [];
+                for (let i = 0; i < 40; i++) {
+                    let r = getPseudoRandom(seed++);
+                    let change = (r - 0.48) * (price * 0.025);
+                    let open = price;
                     let close = Math.max(1, open + change);
-                    let high = Math.max(open, close) + Math.random() * (basePrice * 0.01);
-                    let low = Math.min(open, close) - Math.random() * (basePrice * 0.01);
+                    let high = Math.max(open, close) + getPseudoRandom(seed++) * (price * 0.01);
+                    let low = Math.min(open, close) - getPseudoRandom(seed++) * (price * 0.01);
                     ASSETS[symbol].history.push({ open, high, low, close });
-                    basePrice = close;
+                    price = close;
                 }
-                ASSETS[symbol].price = basePrice;
+                ASSETS[symbol].price = price;
             }
         }
 
         function startMarketSimulation() {
             if (simTimer) clearInterval(simTimer);
             simTimer = setInterval(() => {
+                globalTickCount++;
                 for (let symbol in ASSETS) {
                     let asset = ASSETS[symbol];
+                    let seed = GLOBAL_SHARED_SEED + globalTickCount + symbol.charCodeAt(0);
                     let open = asset.price;
-                    let change = (Math.random() - 0.49) * (open * 0.025);
+                    let r = getPseudoRandom(seed);
+                    let change = (r - 0.48) * (open * 0.02);
                     let close = Math.max(1, open + change);
-                    let high = Math.max(open, close) + Math.random() * (open * 0.005);
-                    let low = Math.min(open, close) - Math.random() * (open * 0.005);
+                    let high = Math.max(open, close) + getPseudoRandom(seed + 1) * (open * 0.005);
+                    let low = Math.min(open, close) - getPseudoRandom(seed + 2) * (open * 0.005);
 
                     asset.history.push({ open, high, low, close });
-                    if (asset.history.length > 50) asset.history.shift();
+                    if (asset.history.length > 60) asset.history.shift();
                     asset.price = close;
                 }
 
@@ -1018,12 +1057,17 @@
             if (aiActive) {
                 btn.innerText = t.stopAI;
                 btn.style.background = 'var(--red)';
-                logAI('AI Engine Engaged. Active Market Scanning...');
+                logAI('Xerox AI Autopilot Engaged.');
             } else {
                 btn.innerText = t.startAI;
                 btn.style.background = 'var(--accent)';
-                logAI('AI Engine Disengaged.');
+                logAI('Xerox AI Autopilot Disengaged.');
             }
+        }
+
+        function toggleSafetyMode(val) {
+            aiSafetyMode = val;
+            logAI(val ? 'Xerox Safety Protection Enabled.' : 'Xerox Safety Protection Disabled.');
         }
 
         function logAI(msg) {
@@ -1035,7 +1079,11 @@
         }
 
         function runAITradeLogic() {
-            if (!currentUser) return;
+            if (!currentUser || !currentUser.wallets) return;
+            let spendWallet = currentUser.wallets.find(w => w.isSpend && !w.frozen)
+                || currentUser.wallets.find(w => !w.frozen);
+            if (!spendWallet) return;
+
             for (let symbol in ASSETS) {
                 let asset = ASSETS[symbol];
                 let history = asset.history;
@@ -1046,20 +1094,20 @@
                 let priceDiff = (lastClose - prevClose) / prevClose;
                 let holdQty = (currentUser.portfolio[symbol] && currentUser.portfolio[symbol].qty) || 0;
 
-                // Autonomous buy signal on price dip
-                if (priceDiff < -0.008 && currentUser.balance >= lastClose) {
-                    let qty = Math.floor((currentUser.balance * 0.15) / lastClose) || 1;
-                    executeTrade(symbol, 'buy', qty, true);
-                    logAI(`AUTONOMOUS BUY: ${symbol} x${qty} @ $${lastClose.toFixed(2)}`);
+                if (priceDiff < -0.005 && spendWallet.balance >= lastClose * 2) {
+                    let qty = Math.floor((spendWallet.balance * 0.15) / lastClose) || 1;
+                    executeTrade(spendWallet.id, symbol, 'buy', qty, true);
+                    logAI(`Xerox BUY: ${symbol} x${qty} @ $${lastClose.toFixed(2)}`);
                     aiHistory.unshift({ time: new Date().toLocaleTimeString(), op: 'BUY', symbol, qty, price: lastClose });
                     renderAIHistory();
-                }
-                // Autonomous sell signal on gain
-                else if (priceDiff > 0.01 && holdQty > 0) {
-                    executeTrade(symbol, 'sell', holdQty, true);
-                    logAI(`AUTONOMOUS SELL: ${symbol} x${holdQty} @ $${lastClose.toFixed(2)}`);
+                    break;
+                } else if (priceDiff > 0.008 && holdQty > 0) {
+                    let depositWallet = currentUser.wallets.find(w => w.isDeposit && !w.frozen) || spendWallet;
+                    executeTrade(depositWallet.id, symbol, 'sell', holdQty, true);
+                    logAI(`Xerox SELL: ${symbol} x${holdQty} @ $${lastClose.toFixed(2)}`);
                     aiHistory.unshift({ time: new Date().toLocaleTimeString(), op: 'SELL', symbol, qty: holdQty, price: lastClose });
                     renderAIHistory();
+                    break;
                 }
             }
         }
@@ -1098,22 +1146,61 @@
             document.getElementById('order-total-val').innerText = '$' + total.toFixed(2);
         }
 
+        function getActiveWalletForTrade(type) {
+            if (!currentUser || !currentUser.wallets) return null;
+            if (type === 'buy') {
+                return currentUser.wallets.find(w => w.isSpend && !w.frozen) || currentUser.wallets.find(w => !w.frozen);
+            } else {
+                return currentUser.wallets.find(w => w.isDeposit && !w.frozen) || currentUser.wallets.find(w => !w.frozen);
+            }
+        }
+
         function executeManualOrder() {
             const qty = parseInt(document.getElementById('order-amount').value) || 0;
             if (qty <= 0) return;
-            executeTrade(activeAsset, orderType, qty, false);
+
+            const wallet = getActiveWalletForTrade(orderType);
+            if (!wallet) {
+                alert(currentLang === 'ru' ? 'Нет доступного активного кошелька!' : 'No active wallet available!');
+                return;
+            }
+
+            const price = ASSETS[activeAsset].price;
+            if (orderType === 'buy' && aiSafetyMode) {
+                let history = ASSETS[activeAsset].history;
+                if (history.length >= 2) {
+                    let prev = history[history.length - 2].close;
+                    if (price > prev * 1.015) {
+                        let msg = currentLang === 'ru'
+                            ? `Xerox Предупреждение: Актив ${activeAsset} резко растет (+${((price / prev - 1) * 100).toFixed(1)}%). Покупка сейчас может быть невыгодной!`
+                            : `Xerox Warning: Asset ${activeAsset} is spiking. Buying now might be risky!`;
+                        if (!confirm(msg)) {
+                            logAI(`Xerox отменил невыгодную сделку по ${activeAsset}`);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            executeTrade(wallet.id, activeAsset, orderType, qty, false);
         }
 
-        function executeTrade(symbol, type, qty, isAI) {
+        function executeTrade(walletId, symbol, type, qty, isAI) {
+            const wallet = currentUser.wallets.find(w => w.id === walletId);
+            if (!wallet || wallet.frozen) {
+                if (!isAI) alert(currentLang === 'ru' ? 'Выбранный кошелек заморожен или не найден!' : 'Wallet frozen or not found!');
+                return;
+            }
+
             const price = ASSETS[symbol].price;
             const total = qty * price;
 
             if (type === 'buy') {
-                if (currentUser.balance < total) {
-                    if (!isAI) alert(currentLang === 'ru' ? 'Недостаточно средств!' : 'Insufficient funds!');
+                if (wallet.balance < total) {
+                    if (!isAI) alert(currentLang === 'ru' ? 'Недостаточно средств в кошельке!' : 'Insufficient funds in wallet!');
                     return;
                 }
-                currentUser.balance -= total;
+                wallet.balance -= total;
                 if (!currentUser.portfolio[symbol]) {
                     currentUser.portfolio[symbol] = { qty: 0, avgPrice: 0 };
                 }
@@ -1123,16 +1210,144 @@
                 item.avgPrice = (currentTotalCost + total) / item.qty;
             } else {
                 if (!currentUser.portfolio[symbol] || currentUser.portfolio[symbol].qty < qty) {
-                    if (!isAI) alert(currentLang === 'ru' ? 'Недостаточно акций!' : 'Not enough assets!');
+                    if (!isAI) alert(currentLang === 'ru' ? 'Недостаточно акций для продажи!' : 'Not enough assets!');
                     return;
                 }
-                currentUser.balance += total;
+                wallet.balance += total;
                 currentUser.portfolio[symbol].qty -= qty;
                 if (currentUser.portfolio[symbol].qty === 0) {
                     delete currentUser.portfolio[symbol];
                 }
             }
             saveUserData();
+        }
+
+        function toggleWalletRole(id, roleType) {
+            let targetWallet = currentUser.wallets.find(w => w.id === id);
+            if (!targetWallet) return;
+
+            if (roleType === 'spend') {
+                let nextState = !targetWallet.isSpend;
+                if (nextState) {
+                    currentUser.wallets.forEach(w => { if (w.id !== id) w.isSpend = false; });
+                }
+                targetWallet.isSpend = nextState;
+            } else if (roleType === 'deposit') {
+                let nextState = !targetWallet.isDeposit;
+                if (nextState) {
+                    currentUser.wallets.forEach(w => { if (w.id !== id) w.isDeposit = false; });
+                }
+                targetWallet.isDeposit = nextState;
+            }
+            saveUserData();
+        }
+
+        function renderWalletsManagement() {
+            const container = document.getElementById('wallets-container');
+            container.innerHTML = '';
+            const t = I18N[currentLang];
+
+            currentUser.wallets.forEach((w) => {
+                let badges = [];
+                if (w.isSpend) badges.push(currentLang === 'ru' ? 'Списание' : 'Spending');
+                if (w.isDeposit) badges.push(currentLang === 'ru' ? 'Зачисление' : 'Deposit');
+                if (!w.isSpend && !w.isDeposit) badges.push(currentLang === 'ru' ? 'По умолчанию' : 'Default');
+
+                let card = document.createElement('div');
+                card.className = 'wallet-card';
+                card.innerHTML = `
+                    <div class="wallet-card-header">
+                        <div>
+                            <span style="font-weight: bold; color: ${w.frozen ? 'var(--text-muted)' : 'var(--text-main)'};">${w.name} ${w.frozen ? '(Заморожен)' : ''}</span>
+                            <div class="wallet-badges">
+                                ${badges.map(b => `<span class="wallet-badge">${b}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="green" style="font-size: 14px; font-weight: bold;">$${w.balance.toFixed(2)}</div>
+                    </div>
+                    <div class="wallet-actions">
+                        <button class="btn-submit" style="width: auto; padding: 4px 8px; margin: 0; font-size: 11px; background: ${w.isSpend ? 'var(--green)' : 'var(--bg-hover)'}; color: ${w.isSpend ? '#000' : 'var(--text-main)'};" onclick="toggleWalletRole('${w.id}', 'spend')">Списание</button>
+                        <button class="btn-submit" style="width: auto; padding: 4px 8px; margin: 0; font-size: 11px; background: ${w.isDeposit ? 'var(--green)' : 'var(--bg-hover)'}; color: ${w.isDeposit ? '#000' : 'var(--text-main)'};" onclick="toggleWalletRole('${w.id}', 'deposit')">Зачисление</button>
+                        <button class="btn-submit" style="width: auto; padding: 4px 8px; margin: 0; font-size: 11px;" onclick="toggleFreezeWallet('${w.id}')">${w.frozen ? t.unfreeze : t.freeze}</button>
+                        ${currentUser.wallets.length > 1 ? `<button class="btn-action" style="width: auto; padding: 4px 8px; margin: 0; font-size: 11px; background: transparent; color: var(--red); border: 1px solid var(--red);" onclick="deleteWallet('${w.id}')">${t.delete}</button>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderWalletSelects() {
+            const fromSelect = document.getElementById('transfer-from');
+            const toSelect = document.getElementById('transfer-to');
+
+            if (!fromSelect || !toSelect) return;
+
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+
+            currentUser.wallets.forEach(w => {
+                let opt = document.createElement('option');
+                opt.value = w.id;
+                opt.innerText = `${w.name} ($${w.balance.toFixed(2)})`;
+                fromSelect.appendChild(opt.cloneNode(true));
+                toSelect.appendChild(opt);
+            });
+        }
+
+        function createNewWallet() {
+            let name = prompt(currentLang === 'ru' ? 'Введите название нового кошелька:' : 'Enter new wallet name:', 'Кошелек ' + (currentUser.wallets.length + 1));
+            if (!name) return;
+            let newId = 'w_' + Date.now();
+            currentUser.wallets.push({ id: newId, name: name, balance: 0.00, frozen: false, isSpend: false, isDeposit: false });
+            saveUserData();
+        }
+
+        function toggleFreezeWallet(id) {
+            let w = currentUser.wallets.find(item => item.id === id);
+            if (w) {
+                w.frozen = !w.frozen;
+                saveUserData();
+            }
+        }
+
+        function deleteWallet(id) {
+            if (currentUser.wallets.length <= 1) return;
+            let idx = currentUser.wallets.findIndex(item => item.id === id);
+            if (idx !== -1) {
+                let remBalance = currentUser.wallets[idx].balance;
+                currentUser.wallets.splice(idx, 1);
+                currentUser.wallets[0].balance += remBalance;
+                saveUserData();
+            }
+        }
+
+        function executeTransfer() {
+            let fromId = document.getElementById('transfer-from').value;
+            let toId = document.getElementById('transfer-to').value;
+            let amount = parseFloat(document.getElementById('transfer-amount').value) || 0;
+
+            if (fromId === toId) {
+                alert(currentLang === 'ru' ? 'Нельзя переводить на тот же кошелек!' : 'Cannot transfer to the same wallet!');
+                return;
+            }
+            if (amount <= 0) return;
+
+            let source = currentUser.wallets.find(w => w.id === fromId);
+            let target = currentUser.wallets.find(w => w.id === toId);
+
+            if (!source || source.frozen || !target || target.frozen) {
+                alert(currentLang === 'ru' ? 'Один из кошельков заморожен!' : 'One of the wallets is frozen!');
+                return;
+            }
+            if (source.balance < amount) {
+                alert(currentLang === 'ru' ? 'Недостаточно средств!' : 'Insufficient funds!');
+                return;
+            }
+
+            source.balance -= amount;
+            target.balance += amount;
+            saveUserData();
+            alert(currentLang === 'ru' ? 'Перевод успешно выполнен!' : 'Transfer successful!');
         }
 
         function renderPortfolioTable() {
@@ -1273,34 +1488,6 @@
             document.getElementById('sidebar').classList.toggle('open');
         }
 
-        function walletDeposit() {
-            const val = parseFloat(document.getElementById('wallet-amount').value) || 0;
-            if (val <= 0) return;
-            currentUser.balance += val;
-            saveUserData();
-            alert(currentLang === 'ru' ? 'Счет успешно пополнен!' : 'Deposit successful!');
-        }
-
-        function openWithdrawModal() {
-            document.getElementById('withdraw-modal').style.display = 'flex';
-        }
-
-        function closeWithdrawModal() {
-            document.getElementById('withdraw-modal').style.display = 'none';
-        }
-
-        function confirmWithdraw() {
-            const val = parseFloat(document.getElementById('wallet-amount').value) || 0;
-            if (val <= 0 || val > currentUser.balance) {
-                alert(currentLang === 'ru' ? 'Недостаточно средств!' : 'Insufficient balance!');
-                return;
-            }
-            currentUser.balance -= val;
-            saveUserData();
-            closeWithdrawModal();
-            alert(currentLang === 'ru' ? 'Успешный вывод средств на банковскую карту!' : 'Withdrawal successfully executed!');
-        }
-
         function selectAvatarText(code) {
             document.querySelectorAll('.avatar-option').forEach(e => e.classList.remove('selected'));
             event.target.classList.add('selected');
@@ -1321,13 +1508,28 @@
         }
 
         function saveProfileSettings() {
+            let newName = document.getElementById('profile-new-username').value.trim();
+            if (newName && newName !== currentUser.username) {
+                let users = getStorage('users', {});
+                if (users[newName]) {
+                    alert(currentLang === 'ru' ? 'Имя уже занято!' : 'Username taken!');
+                    return;
+                }
+                delete users[currentUser.username];
+                currentUser.username = newName;
+                users[newName] = currentUser;
+                setStorage('users', users);
+                setStorage('session', { username: newName });
+            }
             saveUserData();
-            alert(currentLang === 'ru' ? 'Настройки профиля сохранены!' : 'Profile settings saved!');
+            alert(currentLang === 'ru' ? 'Профиль успешно сохранен!' : 'Profile saved!');
         }
 
         function resetAccountData() {
             if (confirm(currentLang === 'ru' ? 'Сбросить баланс и данные?' : 'Reset account data?')) {
-                currentUser.balance = 10000.00;
+                currentUser.wallets = [
+                    { id: 'w1', name: 'Основной', balance: 10000.00, frozen: false, isSpend: true, isDeposit: true }
+                ];
                 currentUser.portfolio = {};
                 saveUserData();
                 alert(currentLang === 'ru' ? 'Данные аккаунта сброшены!' : 'Account reset complete!');
