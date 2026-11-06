@@ -1,416 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Currency Exchange Rates</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="nova_logo.svg" type="image/x-icon">
+    <title>NovaExchange</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151c2c;
+            --bg-input: #1e293b;
+            --primary: #3b82f6;
+            --accent: #06b6d4;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --up: #10b981;
+            --down: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        .controls-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .refresh-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            border-color: var(--primary);
+            background: #26334d;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 900px) {
+            .container {
+                grid-template-columns: 350px 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .field-group {
+            margin-bottom: 1rem;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent);
+        }
+
+        .converter-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-input);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .converter-result .res-val {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .timestamp-box {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .search-bar {
+            margin-bottom: 1rem;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        @media (min-width: 600px) {
+            .grid-cards {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            }
+        }
+
+        .rate-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: transform 0.2s;
+        }
+
+        .rate-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .rate-code {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .rate-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+        }
+
+        @media (min-width: 900px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .chart-box {
+            height: 250px;
+            margin-top: 1rem;
         }
     </style>
 </head>
+<body>
 
-<body
-    class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
-
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
-        <div
-            class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/20">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-extrabold text-xl text-white tracking-tight">NovaExchange</h1>
-                        <p class="text-xs text-slate-400">Live Global Rates & Converter</p>
-                    </div>
-                </div>
-
-                <button onclick="fetchRates()"
-                    class="sm:hidden bg-slate-800 border border-slate-700 text-slate-200 p-2.5 rounded-xl active:scale-95 transition">
-                    <i class="fa-solid fa-rotate-right text-sm"></i>
-                </button>
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">N</div>
+                <div class="logo-text">Nova<span>Exchange</span></div>
             </div>
-
-            <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <div
-                    class="flex-1 sm:flex-initial flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2">
-                    <span class="text-xs text-slate-400 uppercase font-semibold">Base:</span>
-                    <select id="baseCurrency"
-                        class="w-full sm:w-auto bg-transparent text-sm text-white font-bold outline-none cursor-pointer">
-                        <option value="USD" class="bg-slate-800">🇺🇸 USD - US Dollar</option>
-                        <option value="EUR" class="bg-slate-800">🇪🇺 EUR - Euro</option>
-                        <option value="AZN" class="bg-slate-800">🇦🇿 AZN - Azerbaijani Manat</option>
-                        <option value="UAH" class="bg-slate-800">🇺🇦 UAH - Ukrainian Hryvnia</option>
-                        <option value="GBP" class="bg-slate-800">🇬🇧 GBP - British Pound</option>
-                        <option value="RUB" class="bg-slate-800">🇷🇺 RUB - Russian Ruble</option>
-                        <option value="KZT" class="bg-slate-800">🇰🇿 KZT - Kazakhstani Tenge</option>
-                        <option value="TRY" class="bg-slate-800">🇹🇷 TRY - Turkish Lira</option>
-                        <option value="AED" class="bg-slate-800">🇦🇪 AED - UAE Dirham</option>
-                        <option value="CNY" class="bg-slate-800">🇨🇳 CNY - Chinese Yuan</option>
-                    </select>
-                </div>
-
-                <button id="refreshBtn" onclick="fetchRates()"
-                    class="hidden sm:flex bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white p-2.5 rounded-xl transition-all items-center justify-center shadow-lg shadow-indigo-600/20"
-                    title="Refresh Live Rates">
-                    <i id="refreshIcon" class="fa-solid fa-rotate-right text-sm"></i>
+            <div class="controls-top">
+                <button class="refresh-btn" id="manual-refresh">
+                    <span id="refresh-icon">↻</span> Обновить
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-8">
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-            <div
-                class="lg:col-span-1 bg-slate-800/60 border border-slate-700/60 backdrop-blur-md rounded-2xl p-6 shadow-xl flex flex-col justify-between">
-                <div>
-                    <h2 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-right-left text-indigo-400 text-sm"></i> Instant Converter
-                    </h2>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1 font-medium">Amount</label>
-                            <input type="number" id="convertAmount" value="100" min="0" step="any"
-                                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-lg font-semibold outline-none focus:border-indigo-500 transition">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1 font-medium">From</label>
-                                <select id="convertFrom"
-                                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-medium outline-none cursor-pointer focus:border-indigo-500">
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1 font-medium">To</label>
-                                <select id="convertTo"
-                                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-medium outline-none cursor-pointer focus:border-indigo-500">
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="bg-indigo-950/40 border border-indigo-500/20 rounded-xl p-4 mt-4">
-                            <span class="text-xs text-indigo-300 font-medium block mb-1">Converted Value</span>
-                            <div class="text-2xl font-bold text-white tracking-tight" id="convertResult">0.00</div>
-                            <div class="text-xs text-slate-400 mt-1" id="convertRateText">1 USD = 1.00 USD</div>
-                        </div>
-                    </div>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="card" id="converter-section">
+                <div class="card-title">Конвертер</div>
+                <div class="field-group">
+                    <label>Сумма</label>
+                    <input type="number" id="conv-amount" value="100" min="0">
                 </div>
-
-                <div
-                    class="mt-6 pt-4 border-t border-slate-700/50 flex justify-between items-center text-xs text-slate-400">
-                    <span>Status: <span id="statusIndicator" class="text-emerald-400 font-medium">Updated</span></span>
-                    <span id="lastUpdated">--:--:--</span>
+                <div class="field-group">
+                    <label>Из валюты</label>
+                    <select id="conv-from"></select>
+                </div>
+                <div class="field-group">
+                    <label>В валюту</label>
+                    <select id="conv-to"></select>
+                </div>
+                <div class="converter-result">
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Итог</div>
+                    <div class="res-val" id="conv-result">0.00</div>
                 </div>
             </div>
 
-            <div
-                class="lg:col-span-2 bg-slate-800/60 border border-slate-700/60 backdrop-blur-md rounded-2xl p-6 shadow-xl flex flex-col justify-between">
-                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-4">
-                    <div>
-                        <h2 class="text-base font-semibold text-white flex items-center gap-2">
-                            <i class="fa-chart-line fa-solid text-indigo-400 text-sm"></i> Simulated Trend (7 Days)
-                        </h2>
-                        <p class="text-xs text-slate-400">Fluctuation for selected target currency</p>
-                    </div>
-                    <select id="chartTargetCurrency"
-                        class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white outline-none cursor-pointer">
-                    </select>
+            <div class="card" style="margin-top: 1.5rem;">
+                <div class="card-title">Динамика</div>
+                <div class="field-group">
+                    <label>Валютная пара к USD</label>
+                    <select id="chart-currency"></select>
                 </div>
-
-                <div class="relative w-full h-56 sm:h-64">
+                <div class="chart-box">
                     <canvas id="rateChart"></canvas>
                 </div>
             </div>
-        </div>
+        </aside>
 
-        <div>
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-white">Popular Exchange Rates</h2>
-                <div class="relative max-w-xs">
-                    <input type="text" id="searchCurrency" placeholder="Search currency..."
-                        class="bg-slate-800/80 border border-slate-700 rounded-xl pl-9 pr-4 py-1.5 text-sm text-white placeholder-slate-400 outline-none focus:border-indigo-500 w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-400"></i>
+        <main class="main-content">
+            <div class="card" id="rates-section">
+                <div class="card-title">
+                    <span>Курсы валют</span>
+                    <span id="auto-timer" style="font-size: 0.75rem; color: var(--accent);">Автообновление: 60с</span>
                 </div>
-            </div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
+                    <select id="base-currency" style="max-width: 160px;"></select>
+                    <input type="text" id="search-input" class="search-bar" placeholder="Поиск валюты...">
+                </div>
 
-            <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="timestamp-box" id="last-update">Время получения: --:--:--</div>
+                <div class="grid-cards" id="currency-grid" style="margin-top: 1rem;"></div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
-    <footer class="border-t border-slate-800 py-6 bg-slate-900/60">
-        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-500">
-            Powered by free open exchange rates data • Auto-refreshes every 60 seconds
-        </div>
-    </footer>
+    <nav class="bottom-nav">
+        <a href="#rates-section" class="nav-item active">Курсы</a>
+        <a href="#converter-section" class="nav-item">Конвертер</a>
+    </nav>
 
     <script>
-        const currencyData = {
-            USD: {name: "US Dollar", symbol: "$", flag: "🇺🇸"},
-            EUR: {name: "Euro", symbol: "€", flag: "🇪🇺"},
-            AZN: {name: "Azerbaijani Manat", symbol: "₼", flag: "🇦🇿"},
-            UAH: {name: "Ukrainian Hryvnia", symbol: "₴", flag: "🇺🇦"},
-            RUB: {name: "Russian Ruble", symbol: "₽", flag: "🇷🇺"},
-            KZT: {name: "Kazakhstani Tenge", symbol: "₸", flag: "🇰🇿"},
-            TRY: {name: "Turkish Lira", symbol: "₺", flag: "🇹🇷"},
-            AED: {name: "UAE Dirham", symbol: "🇦🇪", flag: "🇦🇪"},
-            GBP: {name: "British Pound", symbol: "£", flag: "🇬🇧"},
-            JPY: {name: "Japanese Yen", symbol: "¥", flag: "🇯🇵"},
-            CNY: {name: "Chinese Yuan", symbol: "¥", flag: "🇨🇳"},
-            CAD: {name: "Canadian Dollar", symbol: "CA$", flag: "🇨🇦"},
-            AUD: {name: "Australian Dollar", symbol: "A$", flag: "🇦🇺"},
-            CHF: {name: "Swiss Franc", symbol: "CHF", flag: "🇨🇭"},
-            INR: {name: "Indian Rupee", symbol: "₹", flag: "🇮🇳"},
-            BRL: {name: "Brazilian Real", symbol: "R$", flag: "🇧🇷"},
-            ZAR: {name: "South African Rand", symbol: "R", flag: "🇿🇦"},
-            SEK: {name: "Swedish Krona", symbol: "kr", flag: "🇸🇪"},
-            PLN: {name: "Polish Zloty", symbol: "zł", flag: "🇵🇱"},
-            THB: {name: "Thai Baht", symbol: "฿", flag: "🇹🇭"},
-            SGD: {name: "Singapore Dollar", symbol: "S$", flag: "🇸🇬"},
-            MXN: {name: "Mexican Peso", symbol: "Mex$", flag: "🇲🇽"}
-        };
+        const CURRENCIES = [
+            { code: "USD", name: "Доллар США", symbol: "$" },
+            { code: "EUR", name: "Евро", symbol: "€" },
+            { code: "RUB", name: "Российский рубль", symbol: "₽" },
+            { code: "AZN", name: "Азербайджанский манат", symbol: "₼" },
+            { code: "UAH", name: "Украинская гривна", symbol: "₴" },
+            { code: "KZT", name: "Тенге", symbol: "₸" },
+            { code: "GEL", name: "Лари", symbol: "₾" },
+            { code: "AMD", name: "Армянский драм", symbol: "֏" },
+            { code: "BYN", name: "Белорусский рубль", symbol: "Br" },
+            { code: "TRY", name: "Турецкая лира", symbol: "₺" },
+            { code: "GBP", name: "Фунт стерлингов", symbol: "£" },
+            { code: "CNY", name: "Юань", symbol: "¥" },
+            { code: "AED", name: "Дирхам ОАЭ", symbol: "د.إ" },
+            { code: "JPY", name: "Иена", symbol: "¥" },
+            { code: "CAD", name: "Канадский доллар", symbol: "$" },
+            { code: "AUD", name: "Австралийский доллар", symbol: "$" },
+            { code: "CHF", name: "Швейцарский франк", symbol: "Fr" },
+            { code: "PLN", name: "Злотый", symbol: "zł" },
+            { code: "BRL", name: "Бразильский реал", symbol: "R$" },
+            { code: "INR", name: "Индийская рупия", symbol: "₹" },
+            { code: "KGS", name: "Киргизский сом", symbol: "с" },
+            { code: "TJS", name: "Таджикский сомони", symbol: "SM" },
+            { code: "UZS", name: "Узбекский сум", symbol: "so'm" },
+            { code: "KWD", name: "Кувейтский динар", symbol: "د.ك" },
+            { code: "QAR", name: "Катарский риал", symbol: "ر.ق" },
+            { code: "ILS", name: "Шекель", symbol: "₪" },
+            { code: "BDT", name: "Бангладешская така", symbol: "৳" },
+            { code: "EGP", name: "Египетский фунт", symbol: "E£" }
+        ];
 
-        let ratesCache = {};
+        let ratesData = {};
         let currentBase = "USD";
+        let countdown = 60;
         let chartInstance = null;
 
-        const API_URL = "https://open.er-api.com/v6/latest/";
+        const baseSelect = document.getElementById("base-currency");
+        const convFrom = document.getElementById("conv-from");
+        const convTo = document.getElementById("conv-to");
+        const chartCurr = document.getElementById("chart-currency");
+        const grid = document.getElementById("currency-grid");
+        const searchInput = document.getElementById("search-input");
+        const lastUpdate = document.getElementById("last-update");
+        const autoTimer = document.getElementById("auto-timer");
 
-        const baseSelect = document.getElementById("baseCurrency");
-        const cardsGrid = document.getElementById("cardsGrid");
-        const convertFrom = document.getElementById("convertFrom");
-        const convertTo = document.getElementById("convertTo");
-        const convertAmount = document.getElementById("convertAmount");
-        const convertResult = document.getElementById("convertResult");
-        const convertRateText = document.getElementById("convertRateText");
-        const lastUpdatedText = document.getElementById("lastUpdated");
-        const searchInput = document.getElementById("searchCurrency");
-        const chartTargetSelect = document.getElementById("chartTargetCurrency");
+        function populateDropdowns() {
+            CURRENCIES.forEach(c => {
+                const opt1 = new Option(`${c.code} - ${c.name}`, c.code);
+                const opt2 = new Option(`${c.code} - ${c.name}`, c.code);
+                const opt3 = new Option(`${c.code} - ${c.name}`, c.code);
+                const opt4 = new Option(`${c.code} - ${c.name}`, c.code);
 
-        window.onload = function () {
-            populateCurrencySelects();
-            initChart();
-            fetchRates();
-
-            setInterval(fetchRates, 60000);
-
-            baseSelect.addEventListener("change", (e) => {
-                currentBase = e.target.value;
-                fetchRates();
+                baseSelect.add(opt1);
+                convFrom.add(opt2);
+                convTo.add(opt3);
+                chartCurr.add(opt4);
             });
 
-            convertFrom.addEventListener("change", updateConversion);
-            convertTo.addEventListener("change", updateConversion);
-            convertAmount.addEventListener("input", updateConversion);
-            searchInput.addEventListener("input", renderCards);
-
-            chartTargetSelect.addEventListener("change", updateChart);
-        };
-
-        function populateCurrencySelects() {
-            const keys = Object.keys(currencyData);
-
-            [convertFrom, convertTo, chartTargetSelect].forEach(select => {
-                select.innerHTML = "";
-            });
-
-            keys.forEach(code => {
-                const info = currencyData[code];
-                const optText = `${info.flag} ${code} - ${info.name}`;
-
-                convertFrom.add(new Option(optText, code));
-                convertTo.add(new Option(optText, code));
-                chartTargetSelect.add(new Option(`${info.flag} ${code}`, code));
-            });
-
-            convertFrom.value = "USD";
-            convertTo.value = "RUB";
-            chartTargetSelect.value = "RUB";
+            baseSelect.value = "USD";
+            convFrom.value = "USD";
+            convTo.value = "EUR";
+            chartCurr.value = "EUR";
         }
 
         async function fetchRates() {
-            const refreshIcon = document.getElementById("refreshIcon");
-            const statusIndicator = document.getElementById("statusIndicator");
-
-            refreshIcon.classList.add("fa-spin");
-            statusIndicator.textContent = "Updating...";
-            statusIndicator.className = "text-amber-400 font-medium";
-
             try {
-                const res = await fetch(API_URL + currentBase);
-                if (!res.ok) throw new Error("Network response failed");
+                const res = await fetch(`https://open.er-api.com/v6/latest/${currentBase}`);
                 const data = await res.json();
-
-                ratesCache = data.rates;
-                const date = new Date(data.time_last_update_utc);
-                lastUpdatedText.textContent = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
-
-                renderCards();
-                updateConversion();
-                updateChart();
-
-                statusIndicator.textContent = "Live";
-                statusIndicator.className = "text-emerald-400 font-medium";
+                
+                if (data && data.rates) {
+                    ratesData = data.rates;
+                    renderCards();
+                    calculateConversion();
+                    updateTimestamp();
+                }
             } catch (err) {
-                console.error("Error fetching exchange rates:", err);
-                statusIndicator.textContent = "Offline/Error";
-                statusIndicator.className = "text-rose-400 font-medium";
-            } finally {
-                refreshIcon.classList.remove("fa-spin");
+                console.error(err);
             }
         }
 
         function renderCards() {
-            const filter = searchInput.value.toLowerCase().trim();
-            cardsGrid.innerHTML = "";
+            grid.innerHTML = "";
+            const query = searchInput.value.toLowerCase();
 
-            Object.keys(currencyData).forEach(code => {
-                if (code === currentBase) return;
+            CURRENCIES.forEach(c => {
+                if (c.code === currentBase) return;
+                if (query && !c.code.toLowerCase().includes(query) && !c.name.toLowerCase().includes(query)) return;
 
-                const info = currencyData[code];
-                const rate = ratesCache[code];
-
-                if (!rate) return;
-
-                if (filter && !code.toLowerCase().includes(filter) && !info.name.toLowerCase().includes(filter)) {
-                    return;
-                }
-
-                const change = ((Math.random() * 0.8) - 0.4).toFixed(2);
-                const isPositive = change >= 0;
-
+                const rate = ratesData[c.code] ? ratesData[c.code].toFixed(4) : "—";
                 const card = document.createElement("div");
-                card.className = "bg-slate-800/40 hover:bg-slate-800 border border-slate-700/50 hover:border-indigo-500/40 rounded-2xl p-5 transition duration-200 cursor-pointer shadow-md";
-                card.onclick = () => {
-                    convertTo.value = code;
-                    chartTargetSelect.value = code;
-                    updateConversion();
-                    updateChart();
-                };
-
+                card.className = "rate-card";
                 card.innerHTML = `
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="text-2xl">${info.flag}</span>
-                            <div>
-                                <h3 class="font-bold text-white leading-tight">${code}</h3>
-                                <p class="text-xs text-slate-400">${info.name}</p>
-                            </div>
-                        </div>
-                        <span class="text-xs font-semibold px-2 py-1 rounded-md ${isPositive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">
-                            ${isPositive ? '+' : ''}${change}%
-                        </span>
+                    <div class="rate-code">
+                        <span>${c.code}</span>
+                        <span>${c.symbol}</span>
                     </div>
-                    <div class="flex items-baseline justify-between mt-2">
-                        <span class="text-2xl font-extrabold text-white tracking-tight">${rate < 0.01 ? rate.toFixed(6) : rate.toFixed(4)}</span>
-                        <span class="text-xs text-slate-400 font-medium">${info.symbol}</span>
-                    </div>
+                    <div class="rate-val">${rate}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">${c.name}</div>
                 `;
-
-                cardsGrid.appendChild(card);
+                grid.appendChild(card);
             });
         }
 
-        function updateConversion() {
-            const from = convertFrom.value;
-            const to = convertTo.value;
-            const amount = parseFloat(convertAmount.value) || 0;
+        function calculateConversion() {
+            const amount = parseFloat(document.getElementById("conv-amount").value) || 0;
+            const from = convFrom.value;
+            const to = convTo.value;
 
-            if (!ratesCache[from] || !ratesCache[to]) return;
+            if (ratesData[from] && ratesData[to]) {
+                const inBase = amount / ratesData[from];
+                const finalVal = inBase * ratesData[to];
+                document.getElementById("conv-result").innerText = finalVal.toFixed(2) + " " + to;
+            }
+        }
 
-            const exchangeRate = ratesCache[to] / ratesCache[from];
-            const result = amount * exchangeRate;
-
-            const targetSymbol = currencyData[to]?.symbol || "";
-            convertResult.textContent = `${targetSymbol} ${result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 4})}`;
-            convertRateText.textContent = `1 ${from} = ${exchangeRate.toFixed(4)} ${to}`;
+        function updateTimestamp() {
+            const now = new Date();
+            lastUpdate.innerText = `Время получения данных: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
         }
 
         function initChart() {
-            const ctx = document.getElementById('rateChart').getContext('2d');
-
-            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.4)');
-            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
-
+            const ctx = document.getElementById("rateChart").getContext("2d");
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
+                    labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
                     datasets: [{
-                        label: 'Rate',
-                        data: [],
-                        borderColor: '#6366f1',
-                        borderWidth: 3,
-                        backgroundColor: gradient,
-                        fill: true,
+                        label: 'Курс к USD',
+                        data: [1.08, 1.079, 1.082, 1.085, 1.083, 1.084, 1.086],
+                        borderColor: '#06b6d4',
                         tension: 0.3,
-                        pointBackgroundColor: '#818cf8',
-                        pointRadius: 4
+                        fill: false
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {display: false},
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: '#1e293b',
-                            titleColor: '#cbd5e1',
-                            bodyColor: '#f8fafc',
-                            borderColor: '#334155',
-                            borderWidth: 1
-                        }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
-                        x: {
-                            grid: {display: false, drawBorder: false},
-                            ticks: {color: '#64748b', font: {size: 10}}
-                        },
-                        y: {
-                            grid: {color: '#334155', drawBorder: false},
-                            ticks: {color: '#64748b', font: {size: 10}}
-                        }
+                        x: { ticks: { color: '#94a3b8' } },
+                        y: { ticks: { color: '#94a3b8' } }
                     }
                 }
             });
         }
 
-        function updateChart() {
-            if (!chartInstance) return;
+        baseSelect.addEventListener("change", (e) => {
+            currentBase = e.target.value;
+            fetchRates();
+        });
 
-            const targetCode = chartTargetSelect.value;
-            const currentRate = ratesCache[targetCode] || 1;
+        document.getElementById("conv-amount").addEventListener("input", calculateConversion);
+        convFrom.addEventListener("change", calculateConversion);
+        convTo.addEventListener("change", calculateConversion);
+        searchInput.addEventListener("input", renderCards);
 
-            const mockData = [];
-            for (let i = 6; i >= 0; i--) {
-                const variance = (Math.sin(i) * 0.015) * currentRate;
-                mockData.push((currentRate + variance).toFixed(4));
+        document.getElementById("manual-refresh").addEventListener("click", () => {
+            countdown = 60;
+            fetchRates();
+        });
+
+        setInterval(() => {
+            countdown--;
+            autoTimer.innerText = `Автообновление: ${countdown}с`;
+            if (countdown <= 0) {
+                countdown = 60;
+                fetchRates();
             }
+        }, 1000);
 
-            chartInstance.data.datasets[0].data = mockData;
-            chartInstance.data.datasets[0].label = `${currentBase} to ${targetCode}`;
-            chartInstance.update();
-        }
+        populateDropdowns();
+        fetchRates();
+        initChart();
     </script>
 </body>
-
 </html>
